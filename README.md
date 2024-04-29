@@ -103,8 +103,7 @@ Currently day dreaming
 
 ## Contact 
 
-EPIXJAVA
-
+epixjava
 
 
 ## License 
