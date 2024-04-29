@@ -62,34 +62,32 @@ Go to <https://gchomebrew.com/> Under the ultimate guide there is a list of indi
    - [x] Add Changelog 
    - [ ] Add badges/contributors/license/etc
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ## Genesis Decomp
 
 90% Complete 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ## English Patch
 
 90% Complete - Work is based on Genesis Decomp. Once that is complete, translation the game will be a breeze. 
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ## Gamecube Version
 
 Research has begun as well as prepping the dev enviorment 
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## SRPG+ 
 
 Currently day dreaming 
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Special Thanks 
 
@@ -101,13 +99,13 @@ Currently day dreaming
 
 [![GRRLIB IMG][grrlibimg]](https://github.com/GRRLIB)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ## Contact 
 
 EPIXJAVA
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ## License 
 
