@@ -38,7 +38,7 @@
 ## Introduction 
 
 
-Hello! The SRPG decomp Project is a an effort to restore\recreate the Gamecube Version of Sonic RPG Console. Allowing the Homebrew list on <https://gchomebrew.com/> to be comeplete and one more game to run on our beloved Gamecubes. The game was orgionally developed by gameblala.
+Hello! The SRPG decomp Project is a an effort to restore\recreate the Gamecube Version of Sonic RPG Console. This allows the Homebrew list on <https://gchomebrew.com/> to be comeplete and one more game to run on our beloved Gamecubes. The game was orgionally developed by gameblala.
 
 * Why? 
 
