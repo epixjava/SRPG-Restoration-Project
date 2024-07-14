@@ -25,6 +25,9 @@
   
 * [English Patch](#English-Patch)
   * and bug fixes
+ 
+* [SRPGN64](#SRPGN64)
+    
 * [Gamecube Version](#Gamecube-Version)
   
 * [SRPG+](#SRPG+)
@@ -77,6 +80,15 @@ Go to <https://gchomebrew.com/> Under the ultimate guide there is a list of indi
 
 
 
+## SRPGN64
+
+Oh where did this come from? Did this in a weekend while shacked up after surgery.  SRPGN64 is an all new SRPG experince! 
+Feast your eyes on novice level code! Features include libdragon console ascii system! Classic Hedgehog quips! Easter eggs and more!
+pretty water tight but has some bugs. Will be trying to make a software renderer version of the game, for sprites and more. 
+
+
+
+
 ## Gamecube Version
 
 Research has begun as well as prepping the dev enviorment 
@@ -96,6 +108,8 @@ Currently day dreaming
 * [DevSter](https://devster.monkeeh.com/)
 
 * [GRRLIB](https://github.com/GRRLIB/GRRLIB)
+
+* [DragonMinded/libdragon](https://github.com/DragonMinded/libdragon)
 
 [![GRRLIB IMG][grrlibimg]](https://github.com/GRRLIB)
 
