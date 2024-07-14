@@ -1,0 +1,143 @@
+'Sega Genesis BasiEgaXorz SRPG
+'Decomped by Epixjava. Made originally by gameblabla 
+ option title, "Sonic RPG!" 
+
+	
+50 	 cls
+70	 s=1000
+80	 m=100
+90 	 a=1000
+100	 cls
+	 
+ 
+ 
+	 if s<1[and]a>0 then 
+	 	goto 600
+	 elseif s>0[and]a<1 then 
+	 	goto 700
+ 	elseif s<1[and]a<1 then 
+	 	goto 800
+	 endif
+	
+
+132 print "Sonic Rpg Console 32X"
+133 print ""
+134 print ""
+140 print "Pv Sonic : ";s:
+150 print "PM Sonic : ";m:
+151 print "           "
+160 print "Pv Shadow : ";a: 
+163 print ""
+164 print ""
+170 print "Haut    - Attaquer": 'UP
+171 print "                  "
+175	print "Bas     - Sacrifice MP 75": 'DOWN
+176 print "                     "
+177	print "Gauche  - Soin MP 25": 'LEFT
+178 print "                        " 
+179 print "Droite  - Abandonner le combat ": 'RIGHT
+	
+	
+ 	while 1
+ 	 c=0: while c=0: c=joypad(): wend
+  	if c.0 then goto 230 
+  	if c.1[and]m>74 then goto 310 
+  	if c.2[and]m>24 then goto 410 
+  	if c.3 then goto 500 
+	 wend
+
+230 print ""
+	print ""
+    print "Sonic Attaque!"
+240 let a=a-100:
+	sleep 60
+250 print "Shadow perd 100 pv!"
+	
+ if a>1 then 
+ 	goto shadow:
+ endif
+	    
+310 print ""
+	print ""
+	print "Sonic utilise Sacrifice!"
+    sleep 60
+330 print "Shadow  perd 320 pv!"
+340 let a=a-320:
+	let m=m-75
+    sleep 60
+350 print "Sonic perd 120 pv!"
+	let s=s-120:
+    sleep 60
+370 goto 100
+     
+410 print ""
+	print ""
+	print "Sonic utilise Soin!"
+	sleep 60
+	Print "Sonic gagne 300 pv!"
+    let s=s+300: 
+    let m=m-25:
+ 
+ if a>1 then 
+     goto shadow:
+ endif
+460 goto 100
+
+500	print "" 
+	print ""  
+    print "Shadow gagne le combat!"
+	sleep 120
+	goto 50
+	
+	
+600 print ""
+	print ""
+	print "Shadow gagne le combat!"
+	sleep 120 
+	goto 50
+	
+	
+700 print ""
+    print ""
+	print "Sonic gagne le combat!"
+	sleep 120 
+	goto 50
+
+800 print ""
+	print ""
+	print "Egalite!"
+	sleep 120
+	goto 50
+	
+shadow:
+2000 sleep 40
+	 print "Shadow Attaque!"
+2010 let s=s-120:
+	 sleep 40
+2020 print "Sonic perd 120 pv!"
+	 sleep 120
+	 goto  100
+'soin:
+'3000 print ""
+	' sleep 30
+'3002 print "Shadow utilise SOIN"
+'3010 let a=a+30: 
+	' sleep 30
+'3020 print "Shadow recupere des PV"
+	' sleep 30
+'3040 goto 100
+    'attk:
+'4000 print "Shadow attaque Sonic"
+'4010 let s=s-6:
+'4020 print "Sonic perd 6 PV"
+'4040 goto 100
+'chaos:
+'5000 print ""
+	' sleep 30
+'5001 print "Shadow utilise Chaos Control"
+'5010 let s=s-25: 
+	 'sleep 30
+'5020 print "Sonic perd 12 PV"
+	 'sleep 30
+    ' goto 100
+'5040 GOTO 5000
