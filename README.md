@@ -31,8 +31,6 @@
     
 * [Special Thanks](#Special-Thanks)
   * Thank Yous
-  
-* [License](#License)
 
 ## Introduction (UPDATED 7/14/2024!!)
 
@@ -115,9 +113,6 @@ Currently day dreaming.
 ## Contact 
 
 epixjava
-
-
-## License 
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
