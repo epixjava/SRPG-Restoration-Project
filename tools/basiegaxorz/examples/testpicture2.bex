@@ -1,0 +1,77 @@
+	cls
+	ink 1
+	print "FF7 Slideshow Test Program"
+	print "using ImaGenesis"
+	print ">>Tiles are drawn upside down<<"
+	print
+	print "FF7 is a registered trademark"
+	print "of Square Soft"
+	print
+	print "press any key"
+	while joypad()=0: wend
+	waitpadup 0
+	ink 0
+
+	while 1
+		disable screen
+		loadtiles tiles1,1120,128
+		pallettes pallette1,0,0,16
+		gosub draw
+		while joypad()=0: wend
+		waitpadup 0
+		
+		disable screen
+		loadtiles tiles2,1120,128
+		pallettes pallette2,0,0,16
+		gosub draw
+		while joypad()=0: wend
+		waitpadup 0
+		
+		disable screen
+		loadtiles tiles3,1120,128
+		pallettes pallette3,0,0,16
+		gosub draw
+		while joypad()=0: wend
+		waitpadup 0
+		
+		disable screen
+		loadtiles tiles4,1120,128
+		pallettes pallette4,0,0,16
+		gosub draw
+		while joypad()=0: wend
+		waitpadup 0
+		
+		disable screen
+		loadtiles tiles5,1120,128
+		pallettes pallette5,0,0,16
+		gosub draw
+		while joypad()=0: wend
+		waitpadup 0
+	wend
+	
+draw:
+	i=128
+	for y=27 to 0 step -1
+		for x=0 to 39
+			drawtile i+vfliptile(1),x,y
+			i++
+		next
+	next
+	enable screen
+	return
+
+tiles1:		datafile ff7_pics\test_pic1.dat,bin
+tiles2:		datafile ff7_pics\test_pic2.dat,bin
+tiles3:		datafile ff7_pics\test_pic3.dat,bin
+tiles4:		datafile ff7_pics\test_pic4.dat,bin
+tiles5:		datafile ff7_pics\test_pic5.dat,bin
+pallette1:	DATAINT $0ECA,$0EEE,$0EA8,$0CA6,$0CAC,$08CA,$08AA,$0A68
+			DATAINT	$0866,$0ACE,$0442,$0686,$066A,$0AAE,$06AA,$0000
+pallette2:	DATAINT	$0002,$0026,$002A,$004A,$006E,$02AE,$002C,$04AE
+			DATAINT	$02EE,$04EE,$0046,$0468,$04AA,$028A,$08CC,$0000
+pallette3:	DATAINT	$0620,$0642,$0A62,$0CEC,$0644,$0CA4,$0684,$06A8
+			DATAINT	$0868,$0424,$0444,$0222,$0648,$0428,$0000,$0000
+pallette4:	DATAINT	$0422,$0224,$0426,$0446,$086A,$0CEE,$044A,$0866
+			DATAINT	$06AE,$0642,$0202,$0244,$0662,$0000,$0000,$0000
+pallette5:	DATAINT	$0442,$0664,$0222,$0244,$0686,$0CEC,$06AA,$0AC6
+			DATAINT	$0866,$0422,$046A,$0224,$088A,$0444,$0000,$0000

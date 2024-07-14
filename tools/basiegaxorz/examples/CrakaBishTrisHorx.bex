@@ -1,0 +1,75 @@
+	option TITLE, "CrakAbisTrisHorx"
+
+	pallette &h0080,0,0
+	cls
+	setscrollmode HSCROLL_OVERALL, VSCROLL_OVERALL
+	scroll2 up,256
+	locate 5,5
+	reload title
+	b=3
+	do
+		read a
+		ink b
+		b=b-1 [and] &h3
+		print chr$(a);
+	loop until a=0
+
+	ink 0: locate 10,10: print "By DevSter"
+	ink 1: locate 15,15: print "BasiEgaXorz Example"
+	ink 2: locate 20,20: print "Cracka START"
+
+	a=0
+	b=5
+	do
+		b++
+		if b=6 then
+			b=0
+			reload title_pallettes,a
+			a=a+2 [and] &hf
+			pallette readint(),0,1
+			pallette readint(),1,1
+			pallette readint(),2,1
+			pallette readint(),3,1
+		end if
+		sleep 1, TVBLANK
+		if readscroll(up)<>0 then
+			scroll up,1
+		else
+			if joypad().7 then
+				exit do
+			end if
+		end if
+	loop
+
+	cls
+	dim gamedata(160) as string
+	level=0
+	gamedata$=string$(chr$(0),160)
+gamestart:
+	gosub redraw_window
+	end
+
+redraw_window:
+	for a=0 to 15
+		locate a,0
+		print chr$(&hDB)+string$(" ",10)+chr$(&hDB)
+	next
+	a++
+	print string$(chr$(&hDB),12)
+	return
+
+title:
+	data "CrakAbisTrisHorx"
+title_pallettes:
+	dataint	&h000E
+	dataint	&h020C
+	dataint	&h040A
+	dataint	&h0608
+	dataint	&h0806
+	dataint	&h0A04
+	dataint	&h0C02
+	dataint	&h0E00
+
+	dataint	&h000E	' Repeat
+	dataint	&h020C
+	dataint	&h040A

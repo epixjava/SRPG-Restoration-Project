@@ -1,0 +1,371 @@
+ option title,"Chicken Go Wee! - by devster"
+
+title_draw:
+ int_drop=0
+ int_b=0
+ loadtiles tiles,3,128
+ loadtiles sprites,4,256
+ cls
+ locate 10,10: print "Chicken Go Weeeee!"
+ locate 11,10: print "By DevSter"
+ locate 17,10: print "1 Player"
+ locate 18,10: print "2 Players"
+ locate 19,10: print "Password"
+ locate 20,10: print "Level Editor"
+ ink 3
+ locate 23,0: print "NOW IS TIME TO THE 68000 HEART ON FIRE"
+ ink 0
+ sel=18
+ b=0: c=0
+ on vblank gosub title_int
+ enable interrupt vblank
+ psgvol 0,15: psgvol 1,15: psgvol 2,15
+title_cursor:
+ drawtile 256,9,sel
+ while 1
+  a=0
+  while a=0: a=joypad(): wend: waitpadup 0
+  randomize
+  if a.0 [and] sel<>18 then
+   drawtile 0,9,sel
+   sel--
+   goto title_cursor
+  elseif a.1 [and] sel<>21 then
+   drawtile 0,9,sel
+   sel++
+   goto title_cursor
+  elseif a [and] &h0F0 then
+   goto oneplayer
+  endif
+ wend
+
+title_int:
+ if int_drop<>0 then
+  int_drop--
+ else
+  int_drop=10
+  int_a=rnd(34)*10: psg 0,int_a
+  int_a=rnd(34)*10: psg 1,int_a+340
+  int_a=rnd(34)*10: psg 2,int_a+680
+ endif
+ if int_b<>0 then
+  int_b--
+ else
+  int_b=5
+  pallette rgb(7-b,b,0),3,1
+'  print b
+  if c=0 then
+   b++
+   if b=7 then c=1
+  else
+   b--
+   if b=0 then c=0
+  endif
+ endif
+ return
+
+oneplayer:
+ disable interrupt vblank
+ psgvol 0,0: psgvol 1,0: psgvol 2,0
+ cls
+ disable screen
+ chicken=addsprite(1,1)
+ propsprite chicken,256,1
+ reload level1
+ dim level(779) as integer
+ dim baddies(30) as integer
+ dim baddiesx(30) as integer
+ dim baddiesy(30) as integer
+ dim baddiesd(30) as integer
+ a=0: while a<>30: baddies(a)=0: a++: wend
+ baddiescount=0
+ int_anim=0
+ a=0: while a<>780
+  read b
+  if b=0 then
+   b=128
+  elseif b=1 then
+   b=129
+  elseif b=2 then
+   playerx=a%30
+   playery=a/30
+   movesprite chicken,playerx*8+136,playery*8+136
+   b=0
+  elseif b=3 then
+   baddies(baddiescount)=addsprite(1,1)
+   baddiesx(baddiescount)=a%30
+   baddiesy(baddiescount)=a/30
+   baddiesd(baddiescount)=0
+   propsprite baddies(baddiescount),258,2
+   movesprite baddies(baddiescount),baddiesx(baddiescount)*8+136,baddiesy(baddiescount)*8+136
+   baddiescount++
+   b=128
+  elseif b=4 then
+   b=130
+  endif
+  level(a)=b
+ a++: wend
+refresh_level:
+ c=0
+ b=1: while b<>27
+  a=1: while a<>31
+   drawtile level(c),a,b
+   c++
+  a++: wend
+ b++: wend
+ enable screen
+ stamina=0
+ on vblank gosub game_int
+refresh_status:
+ disable interrupt vblank
+ locate 0,30: print "LEVEL:"
+ locate 1,32: print level
+ locate 3,30: print "STAMINA:"
+ locate 4,30
+ a=0
+ if stamina<>0 then
+  while a<>stamina
+   print chr$(219);
+   a++
+  wend
+ endif
+ if stamina<>8 then
+  while a<>8
+   print chr$(176);
+   a++
+  wend
+ endif
+ locate 6,30: print "SHELLS:"
+ locate 7,32: print shells
+joypad_loop:
+ enable interrupt vblank
+ while 1
+  a=0: while a=0: a=joypad(): wend
+  if a.2 then goto move_left
+  if a.3 then goto move_right
+  if a.0 then goto move_up
+  if a.1 then goto move_down
+'  if a.4 then
+'   drawtile 1,0,1
+'  endif
+ wend
+
+move_left:
+ disable interrupt vblank
+ propsprite chicken,257,1
+ if playerx=0 then goto joypad_loop
+ a=level(playery*30+playerx-1)
+ if a=129 then goto joypad_loop
+ shiftsprite chicken,-8,0
+ playerx--
+ enable interrupt vblank
+ sleep 10
+ goto joypad_loop
+
+move_right:
+ disable interrupt vblank
+ propsprite chicken,256,1
+ if playerx=29 then goto joypad_loop
+ a=level(playery*30+playerx+1)
+ if a=129 then goto joypad_loop
+ shiftsprite chicken,8,0
+ playerx++
+ gosub sprite_collisions
+ enable interrupt vblank
+ sleep 10
+ goto joypad_loop
+
+move_up:
+ disable interrupt vblank
+ if playery=0 then goto joypad_loop
+ a=level(playery-1*30+playerx)
+ if a=128 [and] level(playery*30+playerx)=130 then goto move_up_skip
+ if a<>130 then goto joypad_loop
+move_up_skip:
+ shiftsprite chicken,0,-8
+ playery--
+ gosub sprite_collisions
+ enable interrupt vblank
+ sleep 10
+ goto joypad_loop
+
+move_down:
+ disable interrupt vblank
+ if playery=25 then goto joypad_loop
+ a=level(playery+1*30+playerx)
+ if a=128 [and] level(playery*30+playerx)=130 then goto move_down_skip
+ if a<>130 then goto joypad_loop
+move_down_skip:
+ shiftsprite chicken,0,8
+ playery++
+ gosub sprite_collisions
+ enable interrupt vblank
+ sleep 10
+ goto joypad_loop
+
+you_died:
+ enable interrupt vblank
+ locate 1,1
+ print "YOU DIED!"
+ end
+
+sprite_collisions:
+ t_a=0: while t_a<>30
+  if baddiesx(t_a)=playerx [and] baddiesy(t_a)=playery then
+   goto you_died
+  endif
+ t_a++: wend
+ return
+
+game_int:
+ if int_drop<>0 then
+  int_drop--
+ else
+  int_a=playery*30+playerx
+  if level(int_a)<>130 then
+   if level(int_a+30)=128 then
+    playery++
+    shiftsprite chicken,0,8
+    int_drop=10
+   endif
+  endif
+ endif
+ if int_baddies<>0 then
+  int_baddies--
+ else
+  int_baddies=20
+  int_anim=int_anim+1%2
+  int_a=0: while int_a<>30
+   if baddies(int_a)<>0 then
+    int_b=baddiesy(int_a)*30+baddiesx(int_a)
+    if level(int_b+30)=128 then
+     baddiesy(int_a)++
+     shiftsprite baddies(int_a),0,8
+     propsprite baddies(int_a),258+int_anim,2
+     goto int_baddies_next
+    endif
+    if baddiesd(int_a)=0 then
+     if baddiesx(int_a)=0 then baddiesd(int_a)=1: goto int_baddies_next
+     if level(int_b+29)=128 then baddiesd(int_a)=1: goto int_baddies_next
+     baddiesx(int_a)--
+     shiftsprite baddies(int_a),-8,0
+     propsprite baddies(int_a),258+int_anim,2
+    else
+     if baddiesx(int_a)=29 then baddiesd(int_a)=0: goto int_baddies_next
+     if level(int_b+31)=128 then baddiesd(int_a)=0: goto int_baddies_next
+     baddiesx(int_a)++
+     shiftsprite baddies(int_a),8,0
+     propsprite baddies(int_a),258+int_anim,2
+    endif
+int_baddies_next:
+    if baddiesx(int_a)=playerx [and] baddiesy(int_a)=playery then shlink you_died
+   endif
+  int_a++: wend
+ endif
+ return
+
+' level data
+' 0=nothing
+' 1=platform
+' 2=start position
+' 3=baddy
+' 4=ladder
+level1:
+	data 4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4
+	data 0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,1,4,1,1,4,1,1,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,1,1,1,4,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 0,0,0,2,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	data 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+
+tiles:
+		datalong $00000000	' 128: background
+		datalong $00000000
+		datalong $00000000
+		datalong $00000000
+		datalong $00000000
+		datalong $00000000
+		datalong $00000000
+		datalong $00000000
+
+		datalong $11111111	' 129: platform
+		datalong $01001001
+		datalong $00100100
+		datalong $10010010
+		datalong $01001001
+		datalong $00100100
+		datalong $10010010
+		datalong $11111111
+
+		datalong $11111111	' 130: ladder
+		datalong $10000001
+		datalong $11111111
+		datalong $10000001
+		datalong $11111111
+		datalong $10000001
+		datalong $11111111
+		datalong $10000001
+
+
+sprites:
+		datalong $00000110	' 256: chicken right
+		datalong $00000111
+		datalong $00000100
+		datalong $10111110
+		datalong $01000010
+		datalong $00111100
+		datalong $00010000
+		datalong $00011000
+
+		datalong $01100000	' 257: chicken left
+		datalong $11100000
+		datalong $00100000
+		datalong $01111101
+		datalong $01000010
+		datalong $00111100
+		datalong $00001000
+		datalong $00011000
+
+		datalong $01111110	' 258: baddie anim 1
+		datalong $10100101
+		datalong $01111110
+		datalong $10010000
+		datalong $11111111
+		datalong $00100101
+		datalong $00111100
+		datalong $00100100
+
+		datalong $01111110	' 259: baddie anim 2
+		datalong $10100101
+		datalong $01111110
+		datalong $00001001
+		datalong $11111111
+		datalong $10100100
+		datalong $00111100
+		datalong $00100100
+
+
+
+
+
+

@@ -1,0 +1,159 @@
+	dim tiles$ as string*32768
+	dim b as long
+	fake dest,tiles$
+ 
+	on hblank gosub vblank
+
+	hblanklines=1
+restart:
+	cls
+	hblank hblanklines
+ 
+ 	ink 2
+ 	print "Memory Copy Speed Test"
+ 	print "Copying 32768 bytes of data"
+	print "Source Address:      $"+hex$(lblptr&(source))
+	print "Destination Address: $"+hex$(lblptr&(dest))
+ 	ink 1
+
+ 	print "Method 1: MemCopy" 
+	counts=0
+	valt: dalt
+'	trapcpu 0
+	enable interrupt hblank
+	memcopy source,dest,32768
+	i++
+	disable interrupt hblank
+'	trapcpu 0
+	ink 0: print "          "+str$(counts),
+	ink 1: print " Hblanks"
+
+ 	print "Method 2: Basic Read+Write"
+	i=0
+	counts=0
+	valt: dalt
+	enable interrupt hblank
+	while i<>32768
+		reload source,i
+		read a
+		reload dest,i
+		write a
+		i++
+	wend
+	disable interrupt hblank
+	ink 0: print "          "+str$(counts),
+	ink 1: print " Hblanks"
+
+ 	print "Method 3: Basic ReadINT+WriteINT"
+	i=0
+	counts=0
+	valt: dalt
+	enable interrupt hblank
+	while i<>32768
+		reload source,i
+		readint a
+		reload dest,i
+		writeint a
+		i=i+2
+	wend
+	disable interrupt hblank
+	ink 0: print "          "+str$(counts),
+	ink 1: print " Hblanks"
+
+ 	print "Method 4: Basic ReadLONG+WriteLONG"
+	i=0
+	counts=0
+	valt: dalt
+	enable interrupt hblank
+	while i<>32768
+		reload source,i
+		readlong a&
+		reload dest,i
+		writelong a&
+		i=i+4
+	wend
+	disable interrupt hblank
+	ink 0: print "          "+str$(counts),
+	ink 1: print " Hblanks"
+
+ 	print "Method 5: Basic PEEK+POKE"
+	i=0
+	counts=0
+	valt: dalt
+	enable interrupt hblank
+	a1&=lblptr&(source)
+	a2&=lblptr&(dest)
+	while i<>32768
+		poke a2&,peek(a1&)
+		a1&++
+		a2&++
+		i++
+	wend
+	disable interrupt hblank
+	ink 0: print "          "+str$(counts),
+	ink 1: print " Hblanks"
+
+ 	print "Method 6: Basic PEEKINT+POKEINT"
+	i=0
+	counts=0
+	valt: dalt
+	enable interrupt hblank
+	a1&=lblptr&(source)
+	a2&=lblptr&(dest)
+	while i<>32768
+		pokeint a2&,peekint(a1&)
+		a1&=a1&+2
+		a2&=a2&+2
+		i=i+2
+	wend
+	disable interrupt hblank
+	ink 0: print "          "+str$(counts),
+	ink 1: print " Hblanks"
+
+ 	print "Method 7: Basic PEEKLONG+POKELONG"
+	i=0
+	counts=0
+	valt: dalt
+	enable interrupt hblank
+	a1&=lblptr&(source)
+	a2&=lblptr&(dest)
+	while i<>32768
+		pokelong a2&,peeklong&(a1&)
+		a1&=a1&+4
+		a2&=a2&+4
+		i=i+4
+	wend
+	disable interrupt hblank
+	ink 0: print "          "+str$(counts),
+	ink 1: print " Hblanks"
+
+ 	print "Method 8: FastTileCopy" 
+	counts=0
+	valt: dalt
+	enable interrupt hblank
+	fasttilecopy source,dest,1024
+	i++
+	disable interrupt hblank
+	ink 0: print "          "+str$(counts),
+	ink 1: print " Hblanks"
+	
+	ink 3
+	print
+	print "The routine that has the smallest"
+	print "HBLANK count is the one that runs"
+	print "the fastest. Press <START> to run"
+	print "test at ";hblanklines+1;" rasters per interrupt"
+
+	do while joypad().7=0
+	loop
+	
+	hblanklines++
+	
+	goto restart
+
+vblank:
+ counts++
+ return
+
+source:		' This is BS data, pretend it is 32768 bytes long
+	data	0

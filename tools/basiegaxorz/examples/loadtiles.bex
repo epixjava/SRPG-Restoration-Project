@@ -1,0 +1,8 @@
+ drawtiles text,0,4,4,11,4
+
+text:	data "Hello World"
+	data "asdf       "
+	data "       1234"
+	data "QWERTY     "
+
+

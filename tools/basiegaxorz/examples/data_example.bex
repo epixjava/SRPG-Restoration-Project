@@ -1,0 +1,66 @@
+first: data "HELLO DaTa!",0
+third: data "Hello World!",0
+second: data "Hello Grandma!",0
+ip: data 192,168,66,6
+
+ on vblank gosub keyloop
+ enable interrupt vblank
+reboot:
+ cls: reload
+ print "Awesome Data Example Started"
+ sleep 60
+ print
+
+ for a=1 to 3
+  read a$
+  print a$
+  sleep 60
+ next
+ print "What? Out of order? Then...."
+
+ sleep 120
+ reload first
+ read a$
+ locate 2,16: print a$
+ sleep 60
+ reload second
+ read a$
+ locate 3,16: print a$
+ sleep 60
+ reload third
+ read a$
+ locate 4,16: print a$
+ sleep 60
+ print: print "There That is Better"
+ sleep 60
+
+ print "Now I do numbers"
+ sleep 60
+ reload ip
+ read oct1,oct2,oct3,oct4
+ print "Fake: ";
+ print oct1;".";
+ sleep 60
+ print oct2;".";
+ sleep 60
+ print oct3;".";
+ sleep 60
+ print oct4
+ sleep 60
+ print "Cool for a sega genesis =)"
+ sleep 240
+ print "All your base are belong to us"
+ print "Mash a key to restart"
+ end
+
+keyloop:
+ key=joypad(0)
+ if key=0 then return
+ shlink reboot
+ return
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+	pallette &h0C80,0,0
+	pallette &h08E0,0,1
+	pallette &h0A0E,0,2
+
+	do while 1
+		valt
+		bgcolor 0,0
+
+		waitraster 0: halt
+		bgcolor 0,0
+
+		waitraster 74: halt
+		bgcolor 0,1
+
+		waitraster 148: halt
+		bgcolor 0,2
+	loop

@@ -1,0 +1,11 @@
+ print "wassup"
+ reload second
+ read a$
+ print a$
+ reload first
+ read a$
+ print a$
+
+first: data "First Set o Data",0
+second: data "Hello Data!",0
+

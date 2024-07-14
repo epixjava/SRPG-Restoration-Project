@@ -1,0 +1,457 @@
+' Attack of the Irish Globs!!
+' By DevSter for BasiEgaXorz 3/31/05
+
+	option explicit
+	option title, "Attack of the Irish Globs!!!"
+
+	pallettes gaming_pals,0,0,16
+	loadtiles gaming_tiles,14,256
+
+	dim high_score as long
+	high_score&=80000
+restart_title:
+	cls
+	print "Attack of the Irish Globs!!!"
+	print
+	print " By DevSter, For BasiEgaXorz"
+	print " Source Example Game"
+	print
+	print "   ** Press Start **"
+	print
+	print
+	print
+	print
+	print "High Score: "; high_score&
+	randomize timer
+	waitpadup 0
+	do until joypad().7
+		sleep 2
+	loop
+	randomize timer
+	waitpadup 0
+	randomize timer
+
+	dim level_dat as string * 950		' 38x25 map
+	dim move_level_dat as string * 950	' 38x25 map
+	dim level_num as integer
+	dim zaps as integer
+	dim score as long
+	dim old_globs_num as integer
+	score&=0
+
+	level_num=1
+	zaps=1
+
+	dim playerx as integer, playery as integer
+make_new_world:
+	level_dat$=string$(chr$(255),950)
+	dim globs_num as integer
+' level		globs	zaps
+' 1			5		2
+' 2			10		3
+' 3			15		4
+' 4			20		5
+' 5			25		8
+' 6			30		9
+' 7			35		10
+' 8			40		11
+' 9			45		12
+' 10		50		15
+' 11		55		16
+' 12		60		17
+' 13		65		18
+' 14		70		19
+' 15		75		22
+' 16		80		23
+	globs_num=level_num*5
+	zaps=zaps+1+(level_num/10)
+	dim temp as integer
+	for temp=1 to globs_num
+		level_dat$(rnd(950))=1
+		randomize timer
+	next
+	old_globs_num=globs_num
+	do
+		temp=rnd(950)
+	loop until level_dat$(temp)=255
+	level_dat$(temp)=2
+
+	pallette &h0222,0,0
+
+redraw_world:
+	cls
+	dim tempx as integer, tempy as integer
+	temp=0
+	ink 0
+	for tempy=1 to 25
+		for tempx=1 to 38
+			select case level_dat$(temp)
+				case 1:
+					drawtile 256,tempx,tempy
+					exit select
+				case 2:
+					drawtile 258,tempx,tempy
+					playerx=tempx-1
+					playery=tempy-1
+					exit select
+			end select
+			temp++
+		next
+	next
+
+	locate 25,0
+	print "Score: "; score&;
+	drawtile 259,16,26
+	locate 25,16
+	print ": "; zaps;
+	locate 25,23
+	print "Level: "; level_num;
+
+	dim dirx as integer, diry as integer
+key_loop:
+	diry=0: dirx=0
+	do while 1
+key_loop_2:
+		sleep 1
+		temp=joypad()
+		diry=0: dirx=0
+		select case temp [and] &hF
+			case 1:			' Up button
+				drawtile 261,38,26
+				if playery=0 then goto key_loop_2
+				diry=-1: dirx=0
+				exit case
+			case 2:			' Down button
+				drawtile 262,38,26
+				if playery=24 then goto key_loop_2
+				diry=1: dirx=0
+				exit case
+			case 4:			' Left button
+				drawtile 263,38,26
+				if playerx=0 then goto key_loop_2
+				diry=0: dirx=-1
+				exit case
+			case 5:			' Up-left button
+				drawtile 268,38,26
+				if playery=0 [or] playerx=0 then goto key_loop_2
+				diry=-1: dirx=-1
+				exit case
+			case 6:			' Down-left button
+				drawtile 267,38,26
+				if playery=24 [or] playerx=0 then goto key_loop_2
+				diry=1: dirx=-1
+				exit case
+			case 8:			' Right button
+				drawtile 264,38,26
+				if playerx=37 then goto key_loop_2
+				diry=0: dirx=1
+				exit case
+			case 9:			' Up-right button
+				drawtile 265,38,26
+				if playery=0 [or] playerx=37 then goto key_loop_2
+				diry=-1: dirx=1
+				exit case
+			case 10:		' Down-right button
+				drawtile 266,38,26
+				if playery=24 [or] playerx=37 then goto key_loop_2
+				diry=1: dirx=1
+				exit case
+			case else:		' Any other button
+				drawtile 269,38,26
+				exit case
+		end select
+		if temp.4 then goto move_player
+		if temp.5 then goto jump_player
+		if temp.6 then goto zaps_player
+	loop
+
+	dim dir as integer
+move_player:
+	dir=diry*38+dirx
+	temp=playery*38+playerx
+	if level_dat$(temp+dir)=3 then goto key_loop
+	if level_dat$(temp+dir)=1 then goto game_over
+	drawtile 0,playerx+1,playery+1
+	level_dat$(temp)=255
+	level_dat$(temp+dir)=2
+	playerx+=dirx
+	playery+=diry
+	drawtile 258,playerx+1,playery+1
+	move_level_dat$=string$(chr$(255),950)	
+	temp=0
+	for tempy=0 to 24
+		for tempx=0 to 37
+			if level_dat$(temp)=1 then
+'				locate 24,0: print tempx,tempy,temp,level_dat$(temp),move_level_dat$(temp);
+'				trapcpu 0
+				dirx=0
+				if playerx<tempx then dirx=-1
+				if playerx>tempx then dirx=1
+				diry=0
+				if playery<tempy then diry=-1
+				if playery>tempy then diry=1
+				drawtile 0,tempx+1,tempy+1
+				level_dat$(temp)=255
+				dir=diry*38+dirx
+				if level_dat$(temp+dir)=3 [or] move_level_dat$(temp+dir)=1 then
+'					globs_num--
+'					if move_level_dat$(temp+dir)=1 then globs_num--
+					drawtile 257,tempx+dirx+1,tempy+diry+1
+					level_dat$(temp+dir)=3
+					move_level_dat$(temp+dir)=255
+				else
+					if level_dat$(temp+dir)=2 then goto game_over
+					move_level_dat$(temp+dir)=1
+				endif
+			endif
+			temp++
+		next
+	next
+	gosub redraw_temp_level
+	score&=score&+(old_globs_num-globs_num*10*level_num)
+	old_globs_num=globs_num
+	locate 25,7
+	print score&;
+	if high_score&<score& then print "!";
+	if globs_num=0 then goto proceed_next_level
+	do until (joypad() [and] &hF0)=0
+		sleep 2
+	loop
+	goto key_loop
+
+zaps_player:
+	if zaps>0 then
+		zaps--
+		locate 25,18
+		print zaps;	"   ";
+		tempx=playerx+1
+		tempy=playery+1
+		temp=playery*38+playerx
+		if temp-39<950 [and] level_dat$(temp-39)=1 then
+			drawtile 259,tempx-1,tempy-1
+			sleep 30
+			drawtile 0,tempx-1,tempy-1
+			level_dat$(temp-39)=255
+			old_globs_num--
+		endif
+		if temp-38<950 [and] level_dat$(temp-38)=1 then
+			drawtile 259,tempx,tempy-1
+			sleep 30
+			drawtile 0,tempx,tempy-1
+			level_dat$(temp-38)=255
+			old_globs_num--
+		endif
+		if temp-37<950 [and] level_dat$(temp-37)=1 then
+			drawtile 259,tempx+1,tempy-1
+			sleep 30
+			drawtile 0,tempx+1,tempy-1
+			level_dat$(temp-37)=255
+			old_globs_num--
+		endif
+		if temp-1<950 [and] level_dat$(temp-1)=1 then
+			drawtile 259,tempx-1,tempy
+			sleep 30
+			drawtile 0,tempx-1,tempy
+			level_dat$(temp-1)=255
+			old_globs_num--
+		endif
+		if temp+1<950 [and] level_dat$(temp+1)=1 then
+			drawtile 259,tempx+1,tempy
+			sleep 30
+			drawtile 0,tempx+1,tempy
+			level_dat$(temp+1)=255
+			old_globs_num--
+		endif
+		if temp+37<950 [and] level_dat$(temp+37)=1 then
+			drawtile 259,tempx-1,tempy+1
+			sleep 30
+			drawtile 0,tempx-1,tempy+1
+			level_dat$(temp+37)=255
+			old_globs_num--
+		endif
+		if temp+38<950 [and] level_dat$(temp+38)=1 then
+			drawtile 259,tempx,tempy+1
+			sleep 30
+			drawtile 0,tempx,tempy+1
+			level_dat$(temp+38)=255
+			old_globs_num--
+		endif
+		if temp+39<950 [and] level_dat$(temp+39)=1 then
+			drawtile 259,tempx+1,tempy+1
+			sleep 30
+			drawtile 0,tempx+1,tempy+1
+			level_dat$(temp+39)=255
+			old_globs_num--
+		endif
+		goto move_player
+	endif
+	goto key_loop
+
+redraw_temp_level:
+	temp=0
+	globs_num=0
+	for tempy=0 to 24
+		for tempx=0 to 37
+			if move_level_dat$(temp)=1 then
+				level_dat$(temp)=1
+				globs_num++
+				drawtile 256,tempx+1,tempy+1
+			endif
+			temp++
+		next
+	next
+	return
+
+jump_player:
+	drawtile 0,playerx+1,playery+1
+	temp=playery*38+playerx
+	level_dat$(temp)=0
+	playerx=rnd(38)
+	playery=rnd(25)
+	temp=playery*38+playerx
+	drawtile 258,playerx+1,playery+1
+	if level_dat$(temp)=1 [or] level_dat$(temp)=3 then goto game_over
+	level_dat$(temp)=2
+	goto move_player
+
+proceed_next_level:
+	ink 1
+	locate 20,20: print "+--------------+"
+	locate 21,20: print "| Next Level!! |"
+	locate 22,20: print "+--------------+"
+	ink 0
+	sleep 60*3
+	level_num++
+	goto make_new_world
+
+game_over:
+	gosub redraw_temp_level
+	drawtile 257,playerx+1,playery+1
+	ink 1
+	locate 20,20: print "+--------------+"
+	locate 21,20: print "| GAME  OVER!! |"
+	locate 22,20: print "+--------------+"
+	ink 0
+	do until joypad().7
+		sleep 2
+	loop
+	if high_score&<score& then high_score&=score&
+	goto restart_title
+
+gaming_pals:
+	DATAINT	$0040,$006E,$0E0E,$000E,$0EE0,$00E0,$0E00,$0888	'  Pallette: 0
+	DATAINT	$0CCC,$0088,$0808,$0008,$0880,$0080,$0800,$0000	
+
+gaming_tiles:
+	DATALONG	$00DDDD00	'  Tile: 256, Irish glob
+	DATALONG	$0DDDDDD0
+	DATALONG	$DDBDDBDD
+	DATALONG	$DDDDDDDD
+	DATALONG	$DDEEEEDD
+	DATALONG	$55555555
+	DATALONG	$05000050
+	DATALONG	$DD0000DD
+	DATALONG	$00000000	'  Tile: 257, Dead Irish glob
+	DATALONG	$00000000
+	DATALONG	$00000000
+	DATALONG	$00DDD033
+	DATALONG	$0DD66DD3
+	DATALONG	$DD5655B3
+	DATALONG	$0535D0D3
+	DATALONG	$DB3300DD
+	DATALONG	$00FFFF00	'  Tile: 258, Elton John!
+	DATALONG	$0FFFFFF0
+	DATALONG	$29999992
+	DATALONG	$92222229
+	DATALONG	$92299229
+	DATALONG	$99999999
+	DATALONG	$09BBBB90
+	DATALONG	$09999990
+	DATALONG	$00111100	'  Tile: 259, Jack Daniels
+	DATALONG	$00011000
+	DATALONG	$00111111
+	DATALONG	$01111101
+	DATALONG	$01414101
+	DATALONG	$01141101
+	DATALONG	$01414110
+	DATALONG	$00111100
+	DATALONG	$00000000	'  Tile: 260, Fruity Slam Dunk Boxers
+	DATALONG	$66666666
+	DATALONG	$63223236
+	DATALONG	$62326226
+	DATALONG	$62226226
+	DATALONG	$63226236
+	DATALONG	$62262326
+	DATALONG	$06606660
+	DATALONG	$000EE000	'  Tile: 261, Up Arrow
+	DATALONG	$00EEEE00
+	DATALONG	$0EEEEEE0
+	DATALONG	$000EE000
+	DATALONG	$000EE000
+	DATALONG	$000EE000
+	DATALONG	$000EE000
+	DATALONG	$00000000
+	DATALONG	$00000000	'  Tile: 262, Down Arrow
+	DATALONG	$000EE000
+	DATALONG	$000EE000
+	DATALONG	$000EE000
+	DATALONG	$000EE000
+	DATALONG	$0EEEEEE0
+	DATALONG	$00EEEE00
+	DATALONG	$000EE000
+	DATALONG	$00000000	'  Tile: 263, Left Arrow
+	DATALONG	$00E00000
+	DATALONG	$0EE00000
+	DATALONG	$EEEEEEE0
+	DATALONG	$EEEEEEE0
+	DATALONG	$0EE00000
+	DATALONG	$00E00000
+	DATALONG	$00000000
+	DATALONG	$00000000	'  Tile: 264, Right Arrow
+	DATALONG	$00000E00
+	DATALONG	$00000EE0
+	DATALONG	$0EEEEEEE
+	DATALONG	$0EEEEEEE
+	DATALONG	$00000EE0
+	DATALONG	$00000E00
+	DATALONG	$00000000
+	DATALONG	$000EEEEE	'  Tile: 265, Up-Right Arrow
+	DATALONG	$00000EEE
+	DATALONG	$0000EEEE
+	DATALONG	$000EEE0E
+	DATALONG	$00EEE00E
+	DATALONG	$0EEE0000
+	DATALONG	$0EE00000
+	DATALONG	$00000000
+	DATALONG	$00000000	'  Tile: 266, Down-Right Arrow
+	DATALONG	$0EE00000
+	DATALONG	$0EEE0000
+	DATALONG	$00EEE00E
+	DATALONG	$000EEE0E
+	DATALONG	$0000EEEE
+	DATALONG	$00000EEE
+	DATALONG	$000EEEEE
+	DATALONG	$00000000	'  Tile: 267, Down-Left Arrow
+	DATALONG	$00000EE0
+	DATALONG	$0000EEE0
+	DATALONG	$E00EEE00
+	DATALONG	$E0EEE000
+	DATALONG	$EEEE0000
+	DATALONG	$EEE00000
+	DATALONG	$EEEEE000
+	DATALONG	$EEEEE000	'  Tile: 268, Up-Left Arrow
+	DATALONG	$EEE00000
+	DATALONG	$EEEE0000
+	DATALONG	$E0EEE000
+	DATALONG	$E00EEE00
+	DATALONG	$0000EEE0
+	DATALONG	$00000EE0
+	DATALONG	$00000000
+	DATALONG	$00000000	'  Tile: 269, Up-Left Arrow
+	DATALONG	$00000000
+	DATALONG	$00000000
+	DATALONG	$000EE000
+	DATALONG	$000EE000
+	DATALONG	$00000000
+	DATALONG	$00000000
+	DATALONG	$00000000

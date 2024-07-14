@@ -1,0 +1,36 @@
+title: data "Joystick Test With BASIC",0
+buttons: data "Up",0
+ data "Down",0
+ data "Left",0
+ data "Right",0
+ data "B",0
+ data "C",0
+ data "A",0
+ data "START",0
+ data "Z",0
+ data "Y",0
+ data "X",0
+ data "MODE",0
+
+ a=0
+ col=0
+ while a<>0
+  read a
+  ink col: print chr$(a);
+  col=col+1%4
+ wend
+ print
+ ink 0: print "Player 1  Player 2  Extension"
+ while 1
+  for b=0 to 2
+   c=joypad(b)
+   ink b+1
+   for a=0 to 11
+    read a$
+    locate a+2,b*10
+    print a;":";
+    if c.a then print a$ else print "     "
+   next
+   reload buttons
+  next
+ wend

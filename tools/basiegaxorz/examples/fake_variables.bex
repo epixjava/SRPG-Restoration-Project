@@ -1,0 +1,12 @@
+pop:
+ data "poop1"
+ data "peep2"
+ data "bong3"
+mydata:
+ data "hello"
+ dataint 123,456,789
+ datalong 1234567,2345678,3456789
+
+ dim a(2) as string*4 at pop
+ print a$(0),a$(1),a$(2)
+

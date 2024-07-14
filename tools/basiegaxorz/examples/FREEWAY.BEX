@@ -1,0 +1,296 @@
+' Freeway
+' For BasiEgaXorz, by DevSter
+	option title, "Freeway"
+	const #Car0=256
+	const #Car1=259
+	const #BigCar00=257
+	const #BigCar01=258
+	const #BigCar10=260
+	const #BigCar11=261
+	const #Chicken=262
+	const #Grass=263
+	const #Road=264
+
+start_program:
+	disable screen
+	vidmode VID32CELL
+	setscrollmode HSCROLL_CELL,VSCROLL_OVERALL
+	setscrollplane SCROLL_A
+	for a=0 to 27
+		scroll2 LEFT,0,a
+	next
+	loadtiles graphics,9,256
+	pallettes color_pallettes,0,0,8,0
+	pallettes color_pallettes,1,0,8,18
+	pallettes color_pallettes,2,0,8,36
+	pallettes color_pallettes,3,0,8,54
+
+	settextplane SCROLL_A: cls
+	settextplane SCROLL_B: cls
+	ink 2
+
+	print
+	print "  Freeway  "
+	print
+	print "BasiEgaXorz v0.23 Demo Program"
+	print "By DevSter"
+	print
+	print "So press START to begin !!"
+
+	setgfxplane SCROLL_B
+	drawtile #Car0+pallette(1),1,2
+	drawtile #Car0+pallette(2),11,2
+
+	player1=addsprite(1,1)
+	player2=addsprite(1,1)
+	propsprite player1,#Chicken,0
+	propsprite player2,#Chicken,0
+
+	enable screen
+
+	do while joypad().7=0
+		sleep 5
+	loop
+
+	level=0
+
+	disable screen
+	settextplane SCROLL_A: cls
+	settextplane SCROLL_B: cls
+
+	settextplane SCROLL_A
+	ink 1
+	locate 0,0: print "Player 1"
+	locate 1,0: print player1score
+	ink 2
+	locate 0,22: print "Player 2"
+	locate 1,22: print player2score
+
+' 2 Grass
+' 8 Road
+' 2 Grass
+' 8 Road
+' 2 Grass
+
+	setgfxplane SCROLL_B
+	for y=0 to 21
+		for x=0 to 31
+			select case y
+				case 0:
+					drawtile #Grass,x,y+3
+					exit case
+				case 2:
+					drawtile #Road,x,y+3
+					exit case
+				case 10:
+					drawtile #Grass,x,y+3
+					exit case
+				case 12:
+					drawtile #Road,x,y+3
+					exit case
+				case 20:
+					drawtile #Grass,x,y+3
+					exit case
+				case 22:
+			end select
+		next
+	next
+
+	setgfxplane SCROLL_A
+	for y=5 to 22
+		for x=0 to 62
+			if x%(9-level)=0 then
+				randomize timer
+				ink rnd(4)
+				select case y
+					case 5:
+						drawtile #Car0,x,y
+						exit case
+					case 6:
+						drawtile #BigCar00,x,y
+						drawtile #BigCar01,x+1,y
+						exit case
+					case 7:
+						drawtile #Car1,x,y
+						exit case
+					case 8:
+						drawtile #BigCar10,x,y
+						drawtile #BigCar11,x+1,y
+						exit case
+					case 9:
+						drawtile #Car0,x,y
+						exit case
+					case 10:
+						drawtile #BigCar10,x,y
+						drawtile #BigCar11,x+1,y
+						exit case
+					case 11:
+						drawtile #Car1,x,y
+						exit case
+					case 12:
+						drawtile #BigCar00,x,y
+						drawtile #BigCar01,x+1,y
+						exit case
+					case 13:
+					case 14:
+						exit case
+					case 15:
+						drawtile #Car0,x,y
+						exit case
+					case 16:
+						drawtile #BigCar00,x,y
+						drawtile #BigCar01,x+1,y
+						exit case
+					case 17:
+						drawtile #Car1,x,y
+						exit case
+					case 18:
+						drawtile #BigCar10,x,y
+						drawtile #BigCar11,x+1,y
+						exit case
+					case 19:
+						drawtile #Car0,x,y
+						exit case
+					case 20:
+						drawtile #BigCar10,x,y
+						drawtile #BigCar11,x+1,y
+						exit case
+					case 21:
+						drawtile #Car1,x,y
+						exit case
+					case 22:
+						drawtile #BigCar00,x,y
+						drawtile #BigCar01,x+1,y
+						exit case
+				end select
+			endif
+		next
+		scroll2 RIGHT,rnd(512),y
+	next
+
+	dim cur_carspeeds(18) as integer
+	dim max_carspeeds(18) as integer
+	for a=0 to 17
+		max_carspeeds(a)=rnd(10-level<<4)+10
+		cur_carspeeds(a)=0
+	next
+
+	movesprite player1,128+90,312
+	movesprite player2,128+180,312
+
+	on VBLANK gosub check_joypad
+
+	enable screen
+
+	do while 1
+		for a=0 to 17
+			if cur_carspeeds(a)=0 then
+				cur_carspeeds(a)=max_carspeeds(a)
+				scroll RIGHT,1,a+5
+			else
+				cur_carspeeds(a)--
+			endif
+		next
+	loop
+
+check_joypad:
+	return
+
+' Color Table:
+' Entry 0:	Default chicken color, Car Color - Red
+' Entry 1:	Alternate Car Color - Cyan
+' Entry 2:	Alternate Car Color - Dark Green
+' Entry 3:	Alternate Car Color - Maroon
+'	0: Transparent,	1: Red (Dynamic for cars),	2: Yellow,		3: Black
+'	4: Dark Dreen,	5: Lighter Green, 			6: Road Gray,	7: Yellow
+'	8: White
+
+color_pallettes:
+	dataint	&h026E,&h000C,&h00CC,&h0000, &h0040,&h00A0,&h0666,&h00EE,&h0EEE
+	dataint	&h0000,&h0880,&h00CC,&h0000, &h0040,&h00A0,&h0666,&h00EE,&h0EEE
+	dataint	&h0000,&h0080,&h00CC,&h0000, &h0040,&h00A0,&h0666,&h00EE,&h0EEE
+	dataint	&h0000,&h0C0E,&h00CC,&h0000, &h0040,&h00A0,&h0666,&h00EE,&h0EEE
+
+graphics:
+' 0: Car Tile
+	datalong	$00000000
+	datalong	$00110000
+	datalong	$01331000
+	datalong	$10330100
+	datalong	$11111110
+	datalong	$11111111
+	datalong	$13311331
+	datalong	$03300330
+' 1: Big-rig tile 1
+	datalong	$11211121
+	datalong	$11121211
+	datalong	$11111111
+	datalong	$11211121
+	datalong	$11122211
+	datalong	$11111111
+	datalong	$13313311
+	datalong	$03303300
+' 2: Big-rig tile 2
+	datalong	$11100000
+	datalong	$11100000
+	datalong	$11111100
+	datalong	$11130100
+	datalong	$11111111
+	datalong	$11111111
+	datalong	$11111331
+	datalong	$00000330
+' 3: Ferari
+	datalong	$00000000
+	datalong	$00000000
+	datalong	$00000000
+	datalong	$00000000
+	datalong	$01111000
+	datalong	$11111111
+	datalong	$33111331
+	datalong	$33000330
+' 4: School bus tile 1
+	datalong	$03333333
+	datalong	$31121121
+	datalong	$31121121
+	datalong	$32222222
+	datalong	$32222222
+	datalong	$32222222
+	datalong	$33333333
+	datalong	$00330000
+' 5: School bus tile 2
+	datalong	$33330000
+	datalong	$12223000
+	datalong	$12553000
+	datalong	$22552333
+	datalong	$22552223
+	datalong	$22552223
+	datalong	$33333333
+	datalong	$00003300
+' 6: Chicken Tile
+	datalong	$00002220
+	datalong	$00002320
+	datalong	$00222211
+	datalong	$02882220
+	datalong	$28822200
+	datalong	$22222200
+	datalong	$22030000
+	datalong	$00033000
+' 7: Playfield Grass
+	datalong	$55554555
+	datalong	$44555455
+	datalong	$55555555
+	datalong	$55455445
+	datalong	$54455555
+	datalong	$55455455
+	datalong	$55455545
+	datalong	$54555555
+' 8: Playfield Asphault
+	datalong	$66666666
+	datalong	$66666666
+	datalong	$66666666
+	datalong	$77667777
+	datalong	$66666666
+	datalong	$66666666
+	datalong	$66666666
+	datalong	$66666666
+

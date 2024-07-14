@@ -1,0 +1,30 @@
+' Demonstration of an assembly-function
+
+ a = 10
+ x = something("Hello!", a)
+ print "Number of characters + a = "; x
+
+' Print a list of ascii characters from the string, and return the number
+' of characters in the string (plus the second argument)
+declare asm function something(a0 as string, d0.w)
+	move.w	d0,d1
+@loop:
+	moveq	#0,d0
+	move.b	(a0)+,d0
+	beq		@exit
+	move.l	d1,-(a7)
+	move.l	d0,-(a7)
+	jsr		print_c
+	move.b	#'-',d0
+	jsr		print_c
+	move.l	(a7)+,d0
+	jsr		print_w
+	jsr		print_cr
+	move.l	(a7)+,d1
+	addq.w	#1,d1
+	bra		@loop
+@exit:
+	jsr		print_cr
+	moveq	#0,d0
+	move.w	d1,d0
+end function

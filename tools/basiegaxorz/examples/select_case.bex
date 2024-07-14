@@ -1,0 +1,14 @@
+ for a=0 to 24
+  print "a=";a,
+  select case a
+   case 2:
+    print "I am in 2 to 3"
+    exit select
+   case 4:
+    print "I am in 4 to 6"
+    exit select
+   case 7:
+   case else:
+    print "Anything else"
+  end select
+ next

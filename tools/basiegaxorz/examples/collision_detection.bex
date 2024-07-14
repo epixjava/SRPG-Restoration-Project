@@ -1,0 +1,16 @@
+ a=addsprite(1,1)
+ b=addsprite(1,1)
+ propsprite a,1,1
+ propsprite b,2,2
+ movesprite a,256,256
+ c=263
+ while 1
+   movesprite b,256,c
+'   sleep 1
+   c=c-1
+   d=collision(128,135)
+  locate 0,0
+  print d
+ wend
+
+

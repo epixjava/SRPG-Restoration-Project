@@ -1,0 +1,4 @@
+ setscrollmode HSCROLL_OVERALL, VSCROLL_2CELL
+ print "wassup"
+ print "dood"
+ scroll DOWN,5,0

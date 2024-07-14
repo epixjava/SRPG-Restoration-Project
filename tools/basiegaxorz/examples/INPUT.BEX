@@ -1,0 +1,5 @@
+ print "Whats your name?";
+ input a$
+ locate 2,0
+ print "Hello ";a$
+

@@ -1,0 +1,50 @@
+' Copy your favorite mp3 to the examples folder and name
+' it "play_games 02.mp3" to hear it during the menu select =).
+' Before you compile, make sure you compile both galaxian.bas
+' and chicken_wee.bas as Sega CD Programs. Also make sure the
+' "copy output to project's dir" in the options is selected.
+
+	option SegaCD
+	addscd galaxian.scd
+	addscd chicken_wee.scd
+	addscd hamurabi.scd
+	addscd irish.scd
+	addscd shnakeee.scd
+	addscd shnakeee2.scd
+	addscd turbo_cars.scd
+	
+	cdplay2 2	' Play audio track 2
+	ink 1
+	locate 1,1: print "DevSter's Sega CD Game 'o Rama"
+	ink 0: locate 5,3: print "1) Galaxian"
+	ink 2: locate 6,3: print "2) Chicken Wee"
+	ink 3: locate 7,3: print "3) Hamurabi"
+	ink 0: locate 8,3: print "4) Irish"
+	ink 2: locate 9,3: print "5) Shnakeee!"
+	ink 3: locate 10,3: print "6) Shnakeee! Part 2"
+	ink 0: locate 11,3: print "7) Turbo Blocks"
+	
+	cursor=0
+	locate cursor+5,1: print ">"
+	
+	while 1
+		a=joypad()
+		if a.0 then
+			locate cursor+5,1: print " "
+			if cursor=0 then cursor=7
+			cursor--
+			locate cursor+5,1: print ">"
+			waitpadup 0
+		endif
+		if a.1 then
+			locate cursor+5,1: print " "
+			cursor++
+			if cursor=7 then cursor=0
+			locate cursor+5,1: print ">"
+			waitpadup 0
+		endif
+		if a.7 then
+			ink 2: locate 16,10: print "Loading!"
+			loadscd cursor+2
+		endif
+	wend

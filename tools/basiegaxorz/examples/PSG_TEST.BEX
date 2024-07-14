@@ -1,0 +1,13 @@
+ psgvol 0,15
+ psg 3,1
+ psgvol 3,12
+ while 1
+  for a=200 to 1000 step 20
+   psg 0,a
+   sleep 1
+  next
+  for a=800 to 200 step -20
+   psg 0,a
+   sleep 1
+  next
+ wend

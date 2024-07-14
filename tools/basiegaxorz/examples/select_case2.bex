@@ -1,0 +1,59 @@
+ print "Select Case Demo 2"
+ 
+ b=0
+ psgvol 0,15
+ for a=0 to 11
+  textstart 1,b*3
+  select case a
+   case 0:
+    print "Case 0"
+    psg 0,596			' C
+    sleep 10
+   case 1:
+    print "Case 1"
+    psg 0,643			' C#
+    sleep 10
+   case 2:
+    print "Case 2"
+    psg 0,685			' D
+    sleep 10
+   case 3:
+    print "Case 3"
+    psg 0,704			' D#
+    sleep 10
+   case 4:
+    print "Case 4"
+    psg 0,739			' E
+    sleep 10
+   case 5:
+    print "Case 5"
+    psg 0,770			' F
+    sleep 10
+   case 6:
+    print "Case 6"
+    psg 0,798			' F#
+    sleep 10
+   case 7:
+    print "Case 7"
+    psg 0,770			' G
+    sleep 10
+   case 8:
+    print "Case 8"
+    psg 0,739			' G#
+    sleep 10
+   case 9:
+    print "Case 9"
+    psg 0,704			' A
+    sleep 10
+   case 10:
+    print "Case 10"
+    psg 0,685			' A#
+    sleep 10
+   case 11:
+    print "Case 11"
+    psg 0,643			' B
+    sleep 10
+  end select
+  b++
+ next
+ psgvol 0,0

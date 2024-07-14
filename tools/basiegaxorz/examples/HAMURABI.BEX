@@ -1,0 +1,196 @@
+begining:
+	disable screen
+	cls
+	ink 1
+	setscrollmode HSCROLL_OVERALL,VSCROLL_OVERALL
+	scroll2 RIGHT,240
+	print
+	print "            ############              ";
+	print "             # HAMURABI #             ";
+	print "              ############            ";
+	enable screen
+	for a=1 to 240
+		if joypad()=0 then
+			sleep 1,TVBLANK
+		else
+			sleep2 100
+		endif
+		scroll LEFT,1
+	next
+	print
+	print "              THE  GREAT              ";
+	print
+	ink 2
+	print "Press A Button"
+	waitpadup 0
+	do while joypad()=0
+		sleep2 113
+		randomize timer
+	loop
+	waitpadup 0
+	disable screen
+	cls
+	scroll2 DOWN,224
+	ink 1
+	print "YOU ARE THE RULER OF THE ANCIENT"
+	print "KINGDOM OF SUMERIA. YOUR PEOPLE CALL"
+	print "YOU 'HAMURABI TEH WISE'. YOUR TASK IS"
+	print "TO DEVELOP A STABLE ECONOMY BY THE"
+	print "WISE MANAGEMENT OF YOUR RESOURCES."
+	print "YOU WILL BE BESET FROM TIME TO TIME"
+	print "BY NATURAL EVENTS. THE ONLY HELP I"
+	print "CAN GIVE YOU IS THE FACT THAT IT"
+	print "TAKES 2 BUSHELS OF GRAIN AS SEED TO"
+	print "PLANT AN ACRE. MAY YOU JUDGE WELL,"
+	print "ALKNOWING HAMURABI."
+	print
+	ink 2
+	print "Press A Button"
+	enable screen
+	for a=1 to 224
+		if joypad()=0 then
+			sleep 5,TVBLANK
+		else
+			sleep2 100
+		endif
+		scroll UP,1
+	next
+	waitpadup 0
+	do while joypad()=0
+		sleep2 113
+		randomize rnd(65535)
+	loop
+	waitpadup 0
+	cls
+	for a=1 to 27
+		sleep 2,TVBLANK
+		print "********** HAMURABI IS HERE **********";
+	next
+	cls
+
+	population=95					' P=POPULATION
+	storage=2800					' S=BUSHELS IN STORAGE
+	harvested=3000					' H=TOTAL NUMBER OF BUSHELS HARVESTED
+	destroyed=harvested-storage		' E=BUSHELS DESTROYED BY RATS
+	bpa=3							' Y=BUSHELS HARVESTED PER ACRE
+	acres=harvested/bpa				' A=ACRES OF LAND OWNED
+	movers=5						' I=PEOPLE MOVING IN
+	disaster=1						' Q=DISASTER NUMBER, 0=PLAUGE, >0=NOTHING
+	starved=0						' D=PEOPLE STARVED
+
+gameloop:
+	cls
+	ink 3
+	print "--STATUS--"
+	print "LAST YEAR:"
+	print "   ";: ink 0: print starved;: ink 3: print " PEOPLE STARVED"
+	print "   ";: ink 0: print movers;: ink 3: print " CAME TO THE CITY"
+	population=population+movers
+	if disaster=0 then
+		population=population>>1
+		print "   HALF DIED OF THE PLAGUE"
+	endif
+	print
+	print "POPULATION IS NOW ";:ink 0: print population: ink 3
+	print "CITY OWNS ";: ink 0: print acres;: ink 3: print " ACRES"
+	ink 0: print bpa;: ink 3: print " BUSHELS HARVESTED PER ACRE"
+	print "RATS DESTROYED ";: ink 0: print destroyed;: ink 3: print " BUSHELS"
+	ink 0: print storage;: ink 3: print " BUSHELS ARE IN STORE"
+
+	print
+	print "DO YOU WISH TO ABDICATE? ";
+	a=0:j=0
+	x=posx():y=posy()
+	print "NO"
+	waitpadup 0
+	do
+		sleep 1
+		j=joypad()
+		if j.0 [or] j.1 then		' JOYPAD UP/DOWN
+			a=1-a
+			locate y,x
+			if a=0 then print "NO " else print "YES"
+			sleep 30
+		endif
+	loop while j<16
+	if a=1 then
+		print:print
+		print "   YOU HAVE FAILED YOU PEOPLE"
+		waitpadup 0
+		do while joypad()=0
+			sleep 1
+		loop
+		goto begining
+	endif
+
+	c=rnd(9)
+	bpa=c+17
+	print
+	print "LAND COST ";bpa;" BUSHELS PER ACRE"
+	input "BUY? ";disaster
+	do until bpa*disaster<storage
+		gosub status
+		input "BUY? ";disaster
+	loop
+
+	if disaster<>0 then
+		acres=acres+disaster
+		storage=storage-(bpa*disaster)
+		c=0
+		goto skipsell
+	endif
+
+	input "SELL? ";disaster
+	do until disaster<acres
+		gosub status
+		input "SELL? ";disaster
+	loop
+
+	acres=acres-disaster
+	storage=storage+(bpa*disaster)
+	c=0
+
+skipsell:
+	input "BUSHELS FOR FOOD? ";disaster
+	do until disaster<=storage
+		gosub status
+		input "BUSHELS FOR FOOD? ";disaster
+	loop
+
+	storage=storage-disaster
+	c=1
+
+redoplant:
+	input "ACRES TO PLANT? ";a
+	do until a<acres [or] a>>1<storage
+		gosub status
+		input "ACRES TO PLANT? ";a
+	loop
+	if a>=10*population then goto redoplant
+	storage=storage-(a>>1)
+	c=rnd(4)+1
+	bpa=c
+	harvested=a*bpa
+	destroyed=0
+	c=rnd(4)+1
+	if c.0=0 then destroyed=storage/c
+	storage=storage-destroyed+harvested
+	c=rnd(4)+1
+	movers=((20*acres+storage)*c/population)/100+1
+	c=disaster/20
+	disaster=rnd(1)
+	if population<c then
+		starved=0
+	else
+		starved=population-c
+		population=c
+	endif
+	goto gameloop
+
+status:
+	print "THINK AGAIN, YOU HAVE:"
+	print "   ";: ink 0: print acres;: ink 3: print " ACRES"
+	print "   ";: ink 0: print population;: ink 3: print " PEOPLE"
+	print "   ";: ink 0: print storage;: ink 3: print " BUSHELS"
+	return
+

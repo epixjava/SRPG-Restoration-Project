@@ -1,0 +1,25 @@
+	windowprop LEFT,UP,40,28
+	settextplane WINDOW
+	a=0: while a<>25
+'		puts a<<6,a
+		print a
+	a++: wend
+	sleep 120
+	locate 25,0
+	print
+	end
+
+	settextplane WINDOW
+	windowprop LEFT,UP,40,28
+	a=0: while a<>32
+		puts a<<6,"AA"
+	a++: wend
+	settextplane SCROLL_B
+	print "SCROLL B"
+	settextplane WINDOW
+	sleep 60
+	cls
+	scroll UP,32
+	settextplane SCROLL_B
+	sleep 60
+	cls

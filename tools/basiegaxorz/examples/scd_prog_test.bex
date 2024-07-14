@@ -1,0 +1,5 @@
+' Compile scd_prog_1.bas before you compile this
+	option SegaCD
+	addscd scd_prog_1.scd
+	print "Main program"
+	loadscd 2

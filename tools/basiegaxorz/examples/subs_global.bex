@@ -1,0 +1,24 @@
+ dim local_hi as string
+ global global_hi as string
+
+ ink 1
+ print "Global Variables vs. Local Variables"
+ print "Demo"
+ ink 0
+
+ global_hi$="BEFORE"
+ local_hi$="BEFORE"
+ print "  global_hi$=";global_hi$
+ print "  local_hi$=";local_hi$
+ yo
+ print "  global_hi$=";global_hi$
+ print "  local_hi$=";local_hi$
+
+declare sub yo()
+ print "  --Call Subroutine--"
+ global_hi$="AFTER"
+ local_hi$="AFTER"
+ print "    global_hi$=";global_hi$
+ print "    local_hi$=";local_hi$
+ print "  --End Subroutine--"
+end sub

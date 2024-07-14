@@ -1,0 +1,239 @@
+' Turbo Cars!
+' By DevSter
+' BasiEgaXorz 0.26 test program (2/12/2006)
+
+	high_score& = 0
+	
+reset_game:
+	' Reset screen
+	freeallsprites
+	scroll2 UP, 0
+	pallette &h00E0, 0, 0
+	pallette &h0000, 0, 1
+	settextplane SCROLL_A
+	cls
+	settextplane SCROLL_B
+	cls
+	
+	' Intro screen
+	print "Devster's Turbo Cars!"
+	print "Press START now!"
+	print
+	print
+	print "High Score: "; high_score&
+	
+	waitpadup
+	while (joypad().7 = 0)
+		for a=0 to 500: next
+		b++
+		randomize b
+	wend
+	
+	waitpadup
+	cls
+
+	' Road pallette colors
+	pallette &h0AAA, 0, 0
+	pallette &h00E0, 0, 1
+
+	' Car pallette colors
+	pallette &h000E, 1, 1
+	
+	' Text pallette colors
+	pallette &h0A00, 2, 1
+	
+	' Obstacle pallette colors
+	pallette &h0068, 3, 1
+	
+	
+	border_left = 10
+	border_right = 10
+	road_width = 20
+	
+	top_location = 63
+
+'	option TEXTSTART, 0, 0
+'	option TEXTWIDTH, 40
+'	option TEXTHEIGHT, 28
+	settextplane SCROLL_A
+	setgfxplane SCROLL_B
+	setscrollplane SCROLL_B
+	setscrollmode HSCROLL_OVERALL, VSCROLL_OVERALL
+
+	car_x = 128+(20*8)-4
+	car_y = 128+(28*8)
+	
+	car = addsprite(1, 1)
+	propsprite car, &h0DB, 1
+	movesprite car, car_x, car_y
+
+	locate 1,1: ink 2
+	print "Score: 0"
+
+	for b=1 to 28
+		cur_location = 0
+		ink 0
+		for a=1 to border_left
+			drawtile &h0DB, cur_location, top_location
+			cur_location = cur_location + 1
+		next
+		for a=1 to road_width
+			drawtile &h020, cur_location, top_location
+			cur_location = cur_location + 1
+		next
+		for a=1 to border_right
+			drawtile &h0DB, cur_location, top_location
+			cur_location = cur_location + 1
+		next
+
+		for a=1 to 4
+			sleep 1, TVBLANK
+			scroll DOWN, 2
+		next
+		if top_location = 0 then
+			top_location = 63
+		else
+			top_location = top_location - 1
+		endif
+		car_y = car_y - 4
+		movesprite car, car_x, car_y
+	next
+	
+	locate 9,12: ink 2: print "Get Ready Dude!"
+
+	sleep 60*3
+	
+	locate 9,12: ink 2: print "               "
+
+	loops& = 0
+	score& = 0
+	
+	last_obstacle = 100
+
+	while 1
+		' Display Road
+		cur_location = 0
+		ink 0
+		for a=1 to border_left
+			drawtile &h0DB, cur_location, top_location
+			cur_location = cur_location + 1
+		next
+		for a=1 to road_width
+			drawtile &h020, cur_location, top_location
+			cur_location = cur_location + 1
+		next
+		for a=1 to border_right
+			drawtile &h0DB, cur_location, top_location
+			cur_location = cur_location + 1
+		next
+		
+		' Display Dots
+		if rnd(2)=1 then
+			ink 0
+			drawtile &h008, rnd(border_left-1), top_location
+			drawtile &h008, border_left+road_width+1+rnd(border_right-1), top_location
+		endif
+
+		' Insert Obstacles
+		last_obstacle = last_obstacle - rnd(4)
+		if (last_obstacle+4) <= 4 then	' Cheap negative number fix
+			obstacle_x = border_left+rnd(road_width)
+			ink 3
+			drawtile &h0DB, obstacle_x + 0, top_location
+			drawtile &h0DB, obstacle_x + 1, top_location
+			last_obstacle = 100
+		end if
+
+		' Insert Bonus
+		if rnd(100)=50 then
+			ink 1
+			drawtile asc("$"), border_left+1+rnd(road_width-3), top_location
+		end if
+
+		' Scroll Road Up
+		for a=1 to 2
+			sleep 1, TVBLANK
+			scroll DOWN, 4
+		next
+		if top_location = 0 then
+			top_location = 63
+		else
+			top_location = top_location - 1
+		endif
+		
+		' Adjust Road Width
+		decision = rnd(9)
+		if decision<=2 then
+			if border_left<>1 then
+				border_left--
+				border_right++
+			endif
+		elseif decision>=6 then
+			if border_right<>1 then
+				border_right--
+				border_left++
+			endif
+		endif
+		loops&++
+		if (loops& [and] &h000000FF) = 0 then
+			road_width--
+			if border_left > border_right then
+				border_right++
+			else
+				border_left++
+			endif
+		endif
+		
+		' Collission Detection Calculation
+		check_x1 = ((car_x [and] &hFFF8) - 128) >> 3
+		if (car_x [and] &h0007) = 0 then
+			check_x2 = check_x1
+		else
+			check_x2 = check_x1 + 1
+		endif
+		
+		check_y = top_location+15
+		if check_y > 63 then check_y=check_y-64
+		
+'		locate 10,10: print readtile(check_x1,check_y)
+		
+		tile_1 = readtile(check_x1,check_y) [and] &h07FF
+		tile_2 = readtile(check_x2,check_y) [and] &h07FF
+		if tile_1=&h0DB [or] tile_2=&h0DB then
+			locate 10,16: ink 2
+			print "Crashed!"
+			if score& > high_score& then
+				sleep 60*3
+				locate 12,16: ink 2
+				print "New High Score!"
+				high_score& = score&
+			endif
+			waitpadup
+			while (joypad().7 = 0)
+				for a=0 to 500: next
+				b++
+				randomize b
+			wend
+			goto reset_game
+		elseif tile_1=asc("$") [or] tile_2=asc("$") then
+			score& = score& + 100000
+			if tile_1=asc("$") then drawtile &h020, check_x1, check_y
+			if tile_2=asc("$") then drawtile &h020, check_x2, check_y
+		endif
+		
+		' Score Management
+		locate 1,1: ink 2
+		print "Score: "; score&
+		
+		score& = score& + ((40-road_width)*10)
+
+		' Player Joypad Inputs
+		joy = joypad()
+		if joy.2 then		' left direction button
+			car_x = car_x - 3
+		endif
+		if joy.3 then		' right direction button
+			car_x = car_x + 3
+		endif
+		movesprite car, car_x, car_y
+	wend

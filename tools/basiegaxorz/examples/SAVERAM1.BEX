@@ -1,0 +1,64 @@
+	dim sramaddr& as long		' Will be used to keep track of the current
+								' address in save ram
+	dim sramdata$ as string		' Will hold our string that we want to read
+								' and write to
+	dim datapos& as long		' Will be used to keep track of the current
+								' address in the string
+
+	' this option will only change the header of your cartridge
+	' rom. all save rams are only 8 bits to save some cash, and
+	' are either allligned even, or odd. here, it is assumed to
+	' be even (starts at &h200000) and is an 8k in size. this
+	' setting is very common in sega genesis games that use save
+	option EXTERNALSRAM, &h200000, 8192, EVEN
+
+	' Call our subroutine to read the name into sramdata$
+	gosub readname
+	' Output our old saved data
+	print "Your saved name: "; sramdata$
+
+	' Now ask for a new name to save
+	input "Enter a name:";sramdata$
+	' Call subroutine to write sramdata$ to save ram
+	gosub writename
+
+	' Tell user to power off and power back on unit to prove
+	' that their name was saved
+	print "Name saved!"
+	print "Reset or turn off the system"
+	end
+
+' Get data from save ram into sramdata$
+readname:
+	' Set sram pointer to the begining of save ram
+	sramaddr& = &h200000
+	' Set string pointer to the begining of the string
+	datapos& = varptr&(sramdata$)
+	' Could have used a while...wend, but didn't work =(
+readname_loop:
+	' Here's the actual reading of the save ram. It will take data
+	' from the address pointed to by sramaddr& and write it to the
+	' address pointed to by datapos&
+	poke datapos&, peek(sramaddr&)
+	' datapos& is both even and odd ram, so no byte skipping here
+	datapos&++
+	' the sram pointer needs to be increased by 2 because the 68k
+	' is 16 bit, and the save ram is 8 bit, so we need to skip the
+	' odd bit in ram, and not read it
+	sramaddr&+=2
+	' If we have read a null in the save ram, then we don't need
+	' to read any more data
+	if peek(sramaddr&-2) <> 0 then goto readname_loop
+	return
+
+' Refer to the comments for reading
+writename:
+	sramaddr& = &h200000
+	datapos& = varptr&(sramdata$)
+writename_loop:
+	' Just the opposite of what has happened in reading
+	poke sramaddr&, peek(datapos&)
+	datapos&++
+	sramaddr&+=2
+	if peek(datapos&-1) <> 0 then goto writename_loop
+	return

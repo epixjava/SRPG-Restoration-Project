@@ -1,0 +1,14 @@
+ print "WASSUP"
+ print "WORLD"
+ quantity=4
+ while 1
+  scroll left,quantity
+  sleep 1
+  scroll up,quantity
+  sleep 1
+  scroll right,quantity
+  sleep 1
+  scroll down,quantity
+  sleep 1
+ wend
+

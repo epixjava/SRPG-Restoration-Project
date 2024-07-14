@@ -1,0 +1,16 @@
+ if a=9 then
+  asm "; 0"
+ elseif a=10 then
+  asm "; 1"
+ elseif a=11 then
+  asm "; 2"
+  if b=2 then
+   asm "; 3"
+  elseif b=3 then
+   asm "; 4"
+  else
+   asm "; 5"
+  endif
+ else
+  asm "; 6"
+ endif

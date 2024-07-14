@@ -1,0 +1,8 @@
+ print "hi"
+ while 1
+  brighten 0,0,rgb(1,0,0),5,7
+  darken 0,0,rgb(1,0,0),5,7
+ wend
+ print "done"
+
+

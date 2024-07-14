@@ -1,0 +1,85 @@
+'tablature
+'--------------------------------------------------
+'--------------------------------------------------
+'--------------------------------------------------
+'--------------2-----3--4--------------4-----3--2--
+'--2--2--5--2-----2--------2--2--5--2-----2--------
+'--------------------------------------------------
+
+'              note,	hold,	release
+sound1:dataint 704,	15,	2	' 4th octave part
+	dataint 704,	15,	0
+	dataint 770,	13,	0
+	dataint 704,	13,	0
+	dataint 798,	15,	0
+	dataint 704,	13,	0
+	dataint 810,	13,	0
+	dataint 822,	15,	0
+	dataint 704,	15,	2
+	dataint 704,	15,	0
+	dataint 770,	13,	0
+	dataint 704,	13,	0
+	dataint 822,	15,	0
+	dataint 704,	13,	0
+	dataint 810,	13,	0
+	dataint 798,	13,	0
+sound2:dataint 383,	15,	2	' 5th octave part
+	dataint 383,	15,	0
+	dataint 516,	13,	0
+	dataint 383,	13,	0
+	dataint 571,	15,	0
+	dataint 383,	13,	0
+	dataint 596,	13,	0
+	dataint 620,	15,	0
+	dataint 383,	15,	2
+	dataint 383,	15,	0
+	dataint 516,	13,	0
+	dataint 383,	13,	0
+	dataint 620,	15,	0
+	dataint 383,	13,	0
+	dataint 596,	13,	0
+	dataint 571,	13,	0
+
+ dim notes(96) as integer
+ reload
+ for a=1 to 96	' load our array
+  readint b
+  notes(a)=b
+ next
+
+ psgvol 0,15			' play the fifth octave, one channel
+ i=1
+ for d=1 to 16
+  psg 0,notes(i)
+  if notes(i+2)=0 then
+   sleep notes(i+1)		' no key release, just hold
+  else
+   sleep notes(i+1)		' hold
+   psgvol 0,0
+   sleep notes(i+2)		' release
+   psgvol 0,15
+  endif
+  i=i+3
+ next
+
+ psgvol 0,15:	psgvol 1,12	' cheap slide --5\4--
+ for a=570 to 170 step -20
+  psg 1,a
+  sleep 1
+ next
+
+ psgvol 0,15: psgvol 1,15	' play the fourth+fifth octave, paired channels
+ i=1
+ for d=1 to 16
+  psg 0,notes(i): psg 1,notes(i+48)
+  if notes(i+2)=0 then
+   sleep notes(i+1)		' no key release, just hold
+  else
+   sleep notes(i+1)		' hold
+   psgvol 0,0: psgvol 1,0
+   sleep notes(i+2)		' release
+   psgvol 0,15: psgvol 1,15
+  endif
+  i=i+3
+ next
+ psgvol 0,0: psgvol 1,0

@@ -1,0 +1,47 @@
+	addscd ff7_pics\test_pic1.dat
+	addscd ff7_pics\test_pic2.dat
+	addscd ff7_pics\test_pic3.dat
+	addscd ff7_pics\test_pic4.dat
+	addscd ff7_pics\test_pic5.dat
+
+	drawtilesinc 128,0,0,40,28
+	while 1
+		loadscd 2,VRAM,0,1120,128
+		pallettes pallette1,0,0,16
+
+		loadscd 3,VRAM,0,1120,128
+		pallettes pallette2,0,0,16
+
+		loadscd 4,VRAM,0,1120,128
+		pallettes pallette3,0,0,16
+
+		loadscd 5,VRAM,0,1120,128
+		pallettes pallette4,0,0,16
+		
+		loadscd 6,VRAM,0,1120,128
+		pallettes pallette5,0,0,16
+	wend
+
+	pallettes pallette1,0,0,16
+
+	loadscd 2,VRAM,0,1120,128
+
+	enable screen
+	print "okay"
+	reload cdbuffer
+	print read$()
+'	for a=0 to 5
+'		print hex$(readlong&())
+'	next
+
+pallette1:	DATAINT $0ECA,$0EEE,$0EA8,$0CA6,$0CAC,$08CA,$08AA,$0A68
+			DATAINT	$0866,$0ACE,$0442,$0686,$066A,$0AAE,$06AA,$0000
+pallette2:	DATAINT	$0002,$0026,$002A,$004A,$006E,$02AE,$002C,$04AE
+			DATAINT	$02EE,$04EE,$0046,$0468,$04AA,$028A,$08CC,$0000
+pallette3:	DATAINT	$0620,$0642,$0A62,$0CEC,$0644,$0CA4,$0684,$06A8
+			DATAINT	$0868,$0424,$0444,$0222,$0648,$0428,$0000,$0000
+pallette4:	DATAINT	$0422,$0224,$0426,$0446,$086A,$0CEE,$044A,$0866
+			DATAINT	$06AE,$0642,$0202,$0244,$0662,$0000,$0000,$0000
+pallette5:	DATAINT	$0442,$0664,$0222,$0244,$0686,$0CEC,$06AA,$0AC6
+			DATAINT	$0866,$0422,$046A,$0224,$088A,$0444,$0000,$0000
+cdbuffer:

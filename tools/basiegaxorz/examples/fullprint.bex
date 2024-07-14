@@ -1,0 +1,17 @@
+' How to set up text plotting for full screen.
+' The Sega Genesis can draw 40 cells wide and
+' 28 cells tall (for NTSC). The default for
+' BasiEgaXorz is 38 wide by 26 high because
+' not all TV's display that extra 1 cell wide
+' area
+ option TEXTSTART, 10, 0		' Default is 1, 1
+ option TEXTHEIGHT, 28			' Default is 26
+ option TEXTWIDTH, 40			' Default is 38
+ 
+ a=0
+ do while 1
+  ink a+1
+  print "FULL SCREEN! ";
+  sleep 10
+  a=a+1%3
+ loop

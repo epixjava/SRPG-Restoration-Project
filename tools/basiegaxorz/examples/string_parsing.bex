@@ -1,0 +1,9 @@
+ a$="start|"+left$("hello",3)+"|end"
+ print a$
+ a$="start|"+right$("hello",1)+"|sup"
+ print a$
+ a$="start|"+mid$("hello",3,2)+"|end"
+ print a$
+
+
+

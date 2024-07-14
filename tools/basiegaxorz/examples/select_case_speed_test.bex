@@ -1,0 +1,160 @@
+	cls
+	ink 2: print "Select Case";
+	ink 1: print " and";
+	ink 2: print " If....Then"
+	ink 3: print "Speed Test"
+	print
+	ink 1:
+		print "The smaller the HBLANK count is,"
+		print "the faster code runs. Look for"
+		print "a pattern in the counts."
+		print "IF...THEN checks are slowest when"
+		print "the number of checks increases."
+		print "SELECT CASE is fastest because the"
+		print "number is only checked once, and a"
+		print "jump to a jump table is made."
+		print
+	ink 0: print "Press START"
+	do while joypad().7=0
+		sleep 2
+	loop
+	cls
+
+	dim counter as integer
+	dim a as integer, b as integer
+	on HBLANK gosub hblank_int
+	hblank 1
+
+	ink 0
+	print " IF....THEN speed test"
+	a=0
+	do
+		counter=0
+		ink (a [and] &h2) + 1
+		valt: dalt
+		enable INTERRUPTHBLANK
+		for c=0 to 1
+			for b=0 to 11
+				if a<=1 then
+					gosub jump_0
+				elseif a<=3 then
+					gosub jump_1
+				elseif a<=5 then
+					gosub jump_2
+				elseif a<=7 then
+					gosub jump_3
+				elseif a<=9 then
+					gosub jump_4
+				elseif a<=11 then
+					gosub jump_5
+				elseif a<=13 then
+					gosub jump_6
+				elseif a<=15 then
+					gosub jump_7
+				elseif a<=17 then
+					gosub jump_8
+				elseif a<=19 then
+					gosub jump_9
+				elseif a<=21 then
+					gosub jump_?
+				endif
+			next
+			a++
+		next
+		disable INTERRUPTHBLANK
+		print " - "; counter; " Hblanks"
+	loop until a>=22
+	print
+
+	ink 0
+	print " SELECT CASE speed test"
+	a=0
+	do
+		counter=0
+		ink (a [and] &h2) + 1
+		valt: dalt
+		enable INTERRUPTHBLANK
+		for c=0 to 1
+			for b=0 to 11
+				select case a
+					case 0:
+						gosub jump_0
+						exit case
+					case 2:
+						gosub jump_1
+						exit case
+					case 4:
+						gosub jump_2
+						exit case
+					case 6:
+						gosub jump_3
+						exit case
+					case 8:
+						gosub jump_4
+						exit case
+					case 10:
+						gosub jump_5
+						exit case
+					case 12:
+						gosub jump_6
+						exit case
+					case 14:
+						gosub jump_7
+						exit case
+					case 16:
+						gosub jump_8
+						exit case
+					case 18:
+						gosub jump_9
+						exit case
+					case 20:
+						gosub jump_?
+						exit case
+					case 22:
+				end select
+			next
+			a++
+		next
+		disable INTERRUPTHBLANK
+		print " - "; counter; " Hblanks"
+	loop until a>=22
+	end
+
+
+jump_0:
+	print "0";
+	return
+jump_1:
+	print "1";
+	return
+jump_2:
+	print "2";
+	return
+jump_3:
+	print "3";
+	return
+jump_4:
+	print "4";
+	return
+jump_5:
+	print "5";
+	return
+jump_6:
+	print "6";
+	return
+jump_7:
+	print "7";
+	return
+jump_8:
+	print "8";
+	return
+jump_9:
+	print "9";
+	return
+jump_?:
+	print "?";
+	return
+
+hblank_int:
+	counter++
+	return

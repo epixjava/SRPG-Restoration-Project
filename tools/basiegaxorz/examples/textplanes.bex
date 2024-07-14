@@ -1,0 +1,10 @@
+'	disable screen
+'	trapcpu
+	
+	print "PLANE A"
+	settextplane scroll_b
+	print "PLANE B"
+	while 1
+		scroll up,1
+		sleep 1
+	wend
