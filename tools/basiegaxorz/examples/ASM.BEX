@@ -1,4 +1,0 @@
- incasm test.s
- call another,"Hello World!"
- print
- print call(hello,89)

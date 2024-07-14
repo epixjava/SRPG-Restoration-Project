@@ -1,8 +1,0 @@
-' for a=0 to 10
-'  if a>3 then continue for
-'  print "Count=";a
-' next
- a=0: while a<>10
-  if a>3 then continue while
-  print "Count=";a
- a++: wend

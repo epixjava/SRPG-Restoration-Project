@@ -1,6 +1,0 @@
- reload long_data
- readlong a&
- print hex$(a&)
-
-small_data:	data 12
-long_data:	datalong $12345678

@@ -1,5 +1,0 @@
-' Click the memory button to see the sizes of the strings
- option string size,12
- a$="hello"
- option string size,16
- b$="wassup"

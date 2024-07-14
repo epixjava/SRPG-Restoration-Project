@@ -1,9 +1,0 @@
-	option segacd
-	data "                ",0
-	read a$
-	print "[";a$;"]"
-	reload
-	write "wassup world!"
-	reload
-	read a$
-	print "[";a$;"]"

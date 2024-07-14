@@ -1,7 +1,0 @@
- dim a(24) as integer
- for b=1 to 24
-  a(b)=b
- next
- for b=1 to 24
-  print a(b)
- next

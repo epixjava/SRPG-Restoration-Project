@@ -1,5 +1,0 @@
- while 1
-  a++
-  if a=9 then exit while
- wend
- print "exit",a

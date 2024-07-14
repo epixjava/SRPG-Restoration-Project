@@ -1,7 +1,0 @@
-	dim whatever as integer
-	asm
-		move.l	#45,d0
-		lsl.l	#2,d0
-		move.w	d0,(__INTEGER_whatever)
-	end asm
-	print whatever

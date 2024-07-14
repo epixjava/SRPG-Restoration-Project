@@ -1,7 +1,0 @@
-' Stick test.s from the exmaples directory into your slibrary directory
- library test.s
- print &hABCD
- print call(hello,&hABCD)
- print
- call another,"WASSUPA ALF"
-

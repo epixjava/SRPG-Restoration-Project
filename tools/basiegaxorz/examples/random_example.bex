@@ -1,7 +1,0 @@
- print "Press any key"
- while joypad()=0
- wend
- randomize
- while 1
-  print rnd(100)
- wend

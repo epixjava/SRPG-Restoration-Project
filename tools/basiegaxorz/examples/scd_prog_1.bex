@@ -1,6 +1,0 @@
-' Compile this before you compile scd_prog_test.bas.
-' Make sure to have the option "Copy output to project's
-' directory" in your options set
-	option SegaCD Program
-	print "Program #2"
-	loadscd 1

@@ -1,7 +1,0 @@
- setscrollmode HSCROLL_CELL,VSCROLL_2CELL
- settextplane SCROLL_B
- setscrollplane SCROLL_B
- print "Hello",readscroll(LEFT,1)
- sleep 100
- scroll RIGHT,10,1
- print "Hello",readscroll(LEFT,1)
