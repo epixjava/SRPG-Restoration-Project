@@ -66,7 +66,7 @@ Go to <https://gchomebrew.com/> Under the ultimate guide there is a list of indi
 
 ## Genesis Decomp
 
-90% Complete 
+90% Complete - Check SRPG Decomp folder README for more info!
 
 
 
@@ -88,13 +88,13 @@ pretty water tight but has some bugs. Will be trying to make a software renderer
 
 ## Gamecube Version
 
-Research has begun as well as prepping the dev enviorment 
+Research has begun, as well as prepping the dev enviorment. 
 
 
 
 ## SRPG+ 
 
-Currently day dreaming 
+Currently day dreaming. 
 
 
 
