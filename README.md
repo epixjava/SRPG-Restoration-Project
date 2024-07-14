@@ -23,9 +23,6 @@
   * The Plan
 * [Genesis Decomp](#Genesis-Decomp)
   
-* [English Patch](#English-Patch)
-  * and bug fixes
- 
 * [SRPGN64](#SRPGN64)
     
 * [Gamecube Version](#Gamecube-Version)
@@ -34,12 +31,12 @@
     
 * [Special Thanks](#Special-Thanks)
   * Thank Yous
-* [Contact](#Contact)
   
 * [License](#License)
 
-## Introduction 
+## Introduction (UPDATED 7/14/2024!!)
 
+## SRPGN64 added to repo! 
 
 Hello! The SRPG decomp Project is a an effort to restore\recreate the Gamecube Version of Sonic RPG Console. This allows the Homebrew list on <https://gchomebrew.com/> to be comeplete and one more game to run on our beloved Gamecubes. The game was orgionally developed by gameblala.
 
@@ -73,7 +70,7 @@ Go to <https://gchomebrew.com/> Under the ultimate guide there is a list of indi
 
 
 
-## English Patch
+## Translation Port
 
 90% Complete - Work is based on Genesis Decomp. Once that is complete, translation the game will be a breeze. 
 
