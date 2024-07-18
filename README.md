@@ -102,11 +102,7 @@ Currently day dreaming.
 
 * [DevSter](https://devster.monkeeh.com/)
 
-* [GRRLIB](https://github.com/GRRLIB/GRRLIB)
-
 * [DragonMinded/libdragon](https://github.com/DragonMinded/libdragon)
-
-[![GRRLIB IMG][grrlibimg]](https://github.com/GRRLIB)
 
 
 
