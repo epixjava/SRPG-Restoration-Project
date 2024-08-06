@@ -359,7 +359,6 @@ void main_screen() {
         printf("  Defeat Super Shadow!  \n");
         printf("\n");
         printf("\n");
-        printf("\n");
         printf(" --------------------\n");
         printf(" - Sonic:           *\n");
         printf(" -  HP :   %d      *\n", s);
@@ -382,11 +381,11 @@ void main_screen() {
         printf("                         |\n");
         printf("| R | - Heal +30 HP -20MP|\n");
         printf("-------------------------\n");
+        printf("   Press A to proceed    \n");
         } else {
         printf("\n");
         printf("\n");
         printf(" Sonic RPG  N64 Edition   \n");
-        printf("\n");
         printf("\n");
         printf("\n");
         printf(" --------------------\n");
@@ -411,6 +410,7 @@ void main_screen() {
         printf("                         |\n");
         printf("| R | - Heal +30 HP -20MP|\n");
         printf("-------------------------\n");
+        printf("   Press A to proceed    \n");
         }
 }
 
@@ -440,6 +440,12 @@ void clear_input_buffer(void) {
 
 // Postgame function
 void postgame() {
+    console_clear();
+    graphics_set_color(
+		0x003F003F,
+        0x00010001
+		
+	);
         printf("???????????????????????????\n");
         printf(" SONIC RPG??? n64^&^4\n");
         printf("\n");
@@ -470,5 +476,5 @@ void postgame() {
     printf("            Good Luck!              \n");
     w = 0;
     p += 1;
-    input(&gameplay);  
+    //input(&gameplay);  
 }
