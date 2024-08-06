@@ -93,7 +93,7 @@ int main() {
                 printf("Super Shadow shook the earth with Chaos blast!!!\n");
                 printf("\n");
                 printf("Sonic is knocked into a wall -35 HP!\n");
-                } else if ( p >= 3 && y <= 15) {
+                } else if ( p >= 3 && y <= 30) {
                 a -= 9;
                 y += 15;
                 printf("\n");
@@ -136,7 +136,7 @@ int main() {
                 printf("Shadow used Chaos Control!!!\n");
                 printf("\n");
                 printf("Sonic takes damage -31 HP!\n");
-                }   else if ( y <= 15) {
+                }   else if ( y <= 30) {
                 console_clear();
                 a -= 7;
                 y += 10;
@@ -352,7 +352,37 @@ void main_screen() {
             else if (a > 100){
                 a = 100;
                 }
-        // Main screen
+        //Main Screen 
+        if ((p >= 3)) {   
+        printf("\n");
+        printf("\n");
+        printf("  Defeat Super Shadow!  \n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
+        printf(" --------------------\n");
+        printf(" - Sonic:           *\n");
+        printf(" -  HP :   %d      *\n", s);
+        printf(" -  MP :   %d     *\n", m);
+        printf(" -----------------\n");
+        printf("\n");
+        printf("\n");
+        printf(" --------------------\n");
+        printf(" - Super Shadow!:   *\n");
+        printf(" -  HP :   %d      *\n", a);
+        printf(" -  MP :   %d     *\n", y);
+        printf(" -----------------\n");
+        printf("\n");
+        printf("-------------------------\n");
+        printf("| A | - Homing Attack!   |\n");
+        printf("                         |\n");
+        printf("| B | - Defend           |\n");
+        printf("                         |\n");
+        printf("| Z | - Spin Dash -20MP  |\n");
+        printf("                         |\n");
+        printf("| R | - Heal +30 HP -20MP|\n");
+        printf("-------------------------\n");
+        } else {
         printf("\n");
         printf("\n");
         printf(" Sonic RPG  N64 Edition   \n");
@@ -381,6 +411,7 @@ void main_screen() {
         printf("                         |\n");
         printf("| R | - Heal +30 HP -20MP|\n");
         printf("-------------------------\n");
+        }
 }
 
 // input function
@@ -409,6 +440,27 @@ void clear_input_buffer(void) {
 
 // Postgame function
 void postgame() {
+        printf("???????????????????????????\n");
+        printf(" SONIC RPG??? n64^&^4\n");
+        printf("\n");
+        printf(" - NULL:                        *\n");
+        printf(" -  HP :   %d                   *\n", s);
+        printf(" -  MP :   %d                *\n", m);
+        printf("\n");
+        printf(" -----------           ---------\n");
+        printf(" - SUPER Shadow:          *\n");
+        printf(" -  HP :   %d                  *\n", a);
+        printf(" -  MP :   %d                *\n", y);
+        printf(" -----------            ------\n");
+        printf("\n");
+        printf("| A | - Homing              Attaque!!   |\n");
+        printf("                         |\n");
+        printf("| ? | - Defendre       (*&*4**(@@##)    |\n");
+        printf("                         |\n");
+        printf("| ? | - Spin          Dash -20MP  |\n");
+        printf("              ^^@(@)!*)#&)D(987&&)           |\n");
+        printf("| ! | - Heal +30                     HP -20MP|\n");
+        printf("------ !*((----------    @@@        -##$@()&--------\n");
     printf("??$?7?9?86@@^*@??3<^*&!??2@31>'?????\n");
     printf("\n");
     printf("Shadow: Now, witness my true power! \n");
