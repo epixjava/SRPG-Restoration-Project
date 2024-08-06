@@ -1,6 +1,6 @@
-/** 
+/*
  * SRPG N64 Edition 
- * port by Epixjava 
+ * Made by Epixjava 
  * 2024
  */
 
@@ -24,161 +24,283 @@ int w = 0;      //wins
 int l = 0;      //losses
 int choice;     // input choice 
 int gameplay = 1;  // store continue value
-
+int p = 0;     // postgame check 
 
 
 // Functions
 void input(int *choice);
 void clear_input_buffer(void);
 void main_screen();
+void postgame();
 
 // main gameplay loop
 int main() {
     console_init();
-    controller_init();
-
+    joypad_init();
+    
     while (gameplay) {
-        // Clear screen
-        console_clear();
 
-        // Render game screen
+        console_clear();
         main_screen();
-        
-        // Handle player input
-        input(&choice);
-        
+        input(&choice);   
+
+
+    if (p == 2) {
+        postgame();
+    } 
+    else {
         switch (choice) {
             // Attack
             case 1:  
                 console_clear();
+                a -= 15;
                 printf("\n");
                 printf("Sonic: Alright! Homing Attack!\n");
                 printf("-----\n");
                 printf("\n");
                 printf("Sonic attacks Shadow!\n");
-                a -= 15;
                 printf("\n");
                 printf("Shadow loses -15 HP!\n");
-                
-                //Shadow Attack Logic
-                if (a > 16 ) {
-                    printf("\n");
-                    printf("\n");
-                    printf("Shadow: How pathetic!\n");
-                    printf("------\n");
-                    printf("\n");
-                    printf("Shadow attacks Sonic!\n");
-                    s -= 25;
-                    printf("\n");
-                    printf("Sonic takes damage! -25 HP!\n");
-                } else if (a <= 20 && y > 20) {
-                    printf("\n");
-                    printf("\n");
-                    printf("Shadow: Maria...I won't lose!\n");
-                    printf("------\n");
-                    printf("\n");
-                    printf("Shadow opens a Heal Unit!\n");
-                    a += 30;
-                    y -= 20;
-                    printf("\n");
-                    printf("Shadow restores +30 HP! \n");
+            //Shadow Attack Logic
+            if ( p >= 3) {
+                s -= 27;
+                printf("\n");
+                printf("\n");
+                printf("Super Shadow: H*w path#ic!\n");
+                printf("&!@--\n");
+                printf("\n");
+                printf("Supa Shadow uses Ch@00$ uPPER!\n");
+                printf("\n");
+                printf("S0ni takes damage! -27 HP!\n");
+                } else if ( p >= 3 && a <= 25 && y >=19) {
+                a += 30;
+                y -= 20;
+                printf("\n");
+                printf("\n");
+                printf("Super Shadow: This is not the end!\n");
+                printf("*^@!-\n");
+                printf("\n");
+                printf("Super Shadow opens a Heal Unit!\n");
+                printf("\n");
+                printf(" Super Shadow restores +30 HP! \n");
+                } else if ( p >= 3 && a <= 17 && y >= 29){
+                    s -= 35;
+                    y -= 20; 
+                printf("\n");
+                printf("SUper sHad0w: CHAOS BLAST!\n");
+                printf("_*^#-\n");
+                printf("\n");
+                printf("Super Shadow shook the earth with Chaos blast!!!\n");
+                printf("\n");
+                printf("Sonic is knocked into a wall -35 HP!\n");
+                } else if ( p >= 3 && y <= 15) {
+                a -= 9;
+                y += 15;
+                printf("\n");
+                printf("Super Shadow: M@11ra...watch m3. I will fulf#$ your w1SH!\n");
+                printf("*$#@-\n");
+                printf("\n");
+                printf("Super Shadow uses Chaos Guard!\n");
+                printf("\n");
+                printf("NULL loses -9 HP! \n");
+                printf("\n");
+                printf("Super S*)_--# burns with passion and G/-] +15 MP!\n");
+                } else if (a > 16 ) {
+                s -= 25;
+                printf("\n");
+                printf("\n");
+                printf("Shadow: How pathetic!\n");
+                printf("------\n");
+                printf("\n");
+                printf("Shadow uses Chaos Upper!\n");
+                printf("\n");
+                printf("Sonic takes damage! -25 HP!\n");
+                } else if (a <= 20 && y >= 19) {
+                a += 30;
+                y -= 20;
+                printf("\n");
+                printf("\n");
+                printf("Shadow: Maria...I won't lose!\n");
+                printf("------\n");
+                printf("\n");
+                printf("Shadow opens a Heal Unit!\n");
+                printf("\n");
+                printf("Shadow restores +30 HP! \n");
                 } else if (a <= 16 && y > 29) {
-                    printf("\n");
-                    printf("Shadow: Chaos....CONTROL!\n");
-                    printf("-----\n");
-                    printf("\n");
-                    printf("Shadow used Chaos Control!!!\n");
-                    s -= 31;
-                    y -= 30;
-                    printf("\n");
-                    printf("Sonic takes damage -31 HP!\n");
+                s -= 31;
+                y -= 30;
+                printf("\n");
+                printf("Shadow: Chaos....CONTROL!\n");
+                printf("-----\n");
+                printf("\n");
+                printf("Shadow used Chaos Control!!!\n");
+                printf("\n");
+                printf("Sonic takes damage -31 HP!\n");
                 }   else if ( y <= 15) {
-                    console_clear();
-                    printf("\n");
-                    printf("Shadow:....Not today Hedgehog!\n");
-                    printf("------\n");
-                    printf("\n");
-                    printf("Shadow uses Chaos Guard!\n");
-                    a -= 6;
-                    printf("\n");
-                    printf("It was kinda extra...Shadow loses -6 HP! \n");
-                    y += 10;
-                    printf("\n");
-                    printf("Shadow feels increased fortitude and gains +10 MP!\n");
-                }
+                console_clear();
+                a -= 7;
+                y += 10;
+                printf("\n");
+                printf("Shadow:....Not today Hedgehog!\n");
+                printf("------\n");
+                printf("\n");
+                printf("Shadow uses Chaos Guard!\n");
+                printf("\n");
+                printf("It was kinda extra...Shadow loses -7 HP! \n");
+                printf("\n");
+                printf("Shadow feels increased fortitude and gains +10 MP!\n");
+            }
                 break;
             // Defend
             case 2: 
+            if ((p >= 3)) {
                 console_clear();
+                s -= 10;
+                m += 15;
+                printf("##*$(@)()(-47620+938#@!!\n");
+                printf("Sonic: I will never give up!\n");
+                printf("-(*$#-\n");
+                printf("\n");
+                printf("Super Sh@dow a1t@c#s S0nic!\n");
+                printf("\n");
+                printf("Sonic d3fend2 hims#l3f with ^>C#4h0!li@)d0g and loses -10 HP! \n");
+                printf("\n");
+                printf("Sonic summons all his stength and gains +15 MP!\n");
+            }
+            else {
+                console_clear();
+                s -= 7;
+                m += 10;
                 printf("\n");
                 printf("Sonic: All this fighting is making me hungry!\n");
                 printf("-----\n");
                 printf("\n");
                 printf("Shadow attacks Sonic!\n");
-                s -= 6;
                 printf("\n");
-                printf("Sonic defends himself with a chili dog and loses -6 HP! \n");
-                m += 10;
+                printf("Sonic defends himself with a chili dog and loses -7 HP! \n");
                 printf("\n");
                 printf("Sonic eats the chili dog and gains +10 MP!\n");
+            }
                 break;
             // Spin Dash
             case 3:  
-                if (m > 19) {
-                    console_clear();
-                    printf("\n");
-                    printf("Sonic turns into a blue blur!\n\n");
-                    m -= 20;
-                    printf("\n");
-                    printf("Sonic rocketed toward Shadow with a Spin Dash! \n");
-                    a -= 30;
-                    printf("\n");
-                    printf("Shadow loses -30 HP! \n");
-                } else {
-                    console_clear();
-                    printf("\n");
-                    printf("Sonic: Mannnn! I dont have enough MP to get fast enough!\n");
-                    printf("-----\n");
-                }
+            if ((p >= 3)) {
+                console_clear();
+                m -= 22;
+                a -= 25;
+                s -= 10;
+                printf("\n");
+                printf("Sonic: bRin@ it 0n!\n");
+                printf("^8&#@-\n");
+                printf("\n");
+                printf("Sonic rocketed toward Super Shadow with a Spin Dash! \n");
+                printf("\n");
+                printf("Super Shadow loses -25 HP! \n");
+                printf("\n");
+                printf("suPer Sh@dow c@)t^er$ with Chaos Magic! \n");
+                printf("\n");
+                printf("Sanic los33#s -10 HP!\n");
+            }
+            else if (m > 19) {
+                console_clear();
+                m -= 20;
+                a -= 30;
+                s -= 10;
+                printf("\n");
+                printf("Sonic turns into a blue blur!\n");
+                printf("\n");
+                printf("Sonic rocketed toward Shadow with a Spin Dash! \n");
+                printf("\n");
+                printf("Shadow loses -30 HP! \n");
+                printf("\n");
+                printf("Shadow counters with Chaos Magic! \n");
+                printf("\n");
+                printf("Sonic loses -10 HP!\n");
+            } 
+                else {
+                console_clear();
+                printf("\n");
+                printf("Sonic: Mannnn! I dont have enough MP to get fast enough!\n");
+                printf("-----\n");
+            }
                 break;
-
             // Defend
             case 4:  
-                if (m > 9) {
-                    console_clear();
-                    printf("\n");
-                    printf("Sonic: I'm beat up pretty bad. Time to heal!\n");
-                    printf("-----\n");
-                    m -= 10;
-                    s += 30;
-                    printf("\n");
-                    printf("Sonic breaks open a ring box!\n");
-                    printf("\n");
-                    printf("Sonic heals +30 HP!\n");
-                } else {
-                    //Add MP check for Heal
-                    console_clear();
-                    printf("\n");
-                    printf("Sonic: Drat, not enough MP to Heal!\n");
-                    printf("-----\n");
-                }
-                break;    
-        }
+                if ((p >= 3)) {
+                console_clear();
+                a += 20;
+                s += 10;
+                printf("\n");
+                printf("Super Shadow knocked the ring box away!\n");
+                printf("\n");
+                printf("$0nic was ^nabl3 to He&l!\n"); 
+                printf("\n");
+                printf("1-per Shd0w took the rings for h1mself!\n");
+                printf("\n");
+                printf("Super Shadow G7*1nD +20 hp!?!\n");
+                printf("\n");
+                printf("Sonic snags a Ring and gains +10 HP! \n");
+            }
+                else if ((m > 9)) {
+                console_clear();
+                m -= 10;
+                s += 30;
+                printf("\n");
+                printf("Sonic: I'm beat up pretty bad. Time to heal!\n");
+                printf("-----\n");
+                printf("\n");
+                printf("Sonic breaks open a ring container!\n");
+                printf("\n");
+                printf("Sonic heals +30 HP!\n");    
+            } 
+                else  {
+                // MP check for Heal
+                console_clear();
+                printf("\n");
+                printf("Sonic: Drat! Not enough MP to Heal!\n");
+                printf("-----\n");
+            }
+                break; 
+        }   }
+            
         // Pause the game to wait for player input
             input(&gameplay);
         
     }
-
     
 }
 
 // main screen
 void main_screen() {
     
-    // Win,lose,HP,MP Check
-            if (a <= 0){
+    // Win,lose,HP,MP Check  
+            if ((p >= 3 && a <= 0)) {
+                console_clear();
+                w = 0;
+                l = 0;
+                s = 100; 
+                m = 50;
+                a = 100;
+                y = 50;
+                p = 0;
+                printf("\n");
+                printf("             Super Shadow has been defeated! \n");
+                printf("\n");
+                printf("                Sonic has won the fight!     \n");
+                printf("\n");
+                printf("      Thanks for playing my game! I hope you had fun. \n");
+                printf("\n");
+                printf("                Press A to play again.....\n");
+                input(&gameplay);
+            }
+            else if(a <= 0){
                 console_clear();
                 w += 1;
+                s = 100; 
+                m = 50;
+                a = 100;
+                y = 50;
+                p += 1;
                 printf("\n");
                 printf("Sonic has won the fight!!!\n");
                 printf("\n");
@@ -187,16 +309,16 @@ void main_screen() {
                 printf("Loses: %d  \n", l);
                 printf("\n");
                 printf("\n");
-                printf("Thanks for playing! Press any button to play again.\n");
+                printf("Thanks for playing! Press A to play again.\n");
+                input(&gameplay);
+                }
+            else if (s <= 0){
+                console_clear();
+                l += 1;
                 s = 100; 
                 m = 50;
                 a = 100;
                 y = 50;
-                input(&gameplay);
-                }
-                else if (s <= 0){
-                console_clear();
-                l += 1;
                 printf("\n");
                 printf("GAME OVER! Shadow has won the fight!!!\n");
                 printf("\n");
@@ -208,52 +330,47 @@ void main_screen() {
                 printf("Wins:   %d \n", w);
                 printf("\n");
                 printf("\n");
-                printf("Thanks for playing! Press any button to play again.\n");
-                s = 100; 
-                m = 50;
-                a = 100;
-                y = 50;
+                printf("Thanks for playing! Press A to play again.\n");
                 input(&gameplay);
                 }
-                else if (m > 50){
+            else if (m > 50){
                 m = 50;
                 printf("\n");
                 printf("\n");
-                printf("Sonic is full and can't eat anymore! (MP Full)\n");
+                printf("Sonic is full!! (MP Full)\n");
                 printf("\n");
                 printf("                                           X X \n");
                 printf("Sonic: Oh man I think im gonna barrrffff....O  \n");
                 input(&gameplay);
                 }
-                else if (s > 100){
+            else if (s > 100){
                 s = 100;
                 }   
-                else if (y > 50){
+            else if (y > 50){
                 y = 50;
                 }
-                else if (a > 100){
+            else if (a > 100){
                 a = 100;
                 }
-    
         // Main screen
         printf("\n");
         printf("\n");
-        printf("      Sonic RPG!    \n");
+        printf(" Sonic RPG  N64 Edition   \n");
         printf("\n");
         printf("\n");
         printf("\n");
-        printf("--------------------\n");
-        printf("- Sonic:           *\n");
-        printf("-  HP : %d       *\n", s);
-        printf("-  MP : %d      *\n", m);
-        printf("----------------\n");
+        printf(" --------------------\n");
+        printf(" - Sonic:           *\n");
+        printf(" -  HP :   %d      *\n", s);
+        printf(" -  MP :   %d     *\n", m);
+        printf(" -----------------\n");
         printf("\n");
         printf("\n");
-        printf("--------------------\n");
-        printf("- Shadow:          *\n");
-        printf("-  HP : %d       *\n", a);
-        printf("-  MP : %d      *\n", y);
-        printf("----------------\n");
+        printf(" --------------------\n");
+        printf(" - Shadow:          *\n");
+        printf(" -  HP :   %d      *\n", a);
+        printf(" -  MP :   %d     *\n", y);
+        printf(" -----------------\n");
         printf("\n");
         printf("-------------------------\n");
         printf("| A | - Homing Attack!   |\n");
@@ -270,9 +387,8 @@ void main_screen() {
 void input(int *choice) {
     *choice = 0;
     while (!(*choice == 1 || *choice == 2 || *choice == 3 || *choice == 4 )) {
-        controller_scan();
+        joypad_poll();
         struct controller_data keys = get_keys_down();
-
         if (keys.c[0].A)
             *choice = 1;
         else if (keys.c[0].B)
@@ -281,14 +397,26 @@ void input(int *choice) {
             *choice = 3;
         else if (keys.c[0].R)
             *choice = 4;
-
-        // Clear input buffer
         clear_input_buffer();
     }
 }
 
-// clear input buffer
+// clears input buffer to avoid errors
 void clear_input_buffer(void) {
     char c;
     while ((c = getchar()) != '\n' && c != EOF);
+}
+
+// Postgame function
+void postgame() {
+    printf("??$?7?9?86@@^*@??3<^*&!??2@31>'?????\n");
+    printf("\n");
+    printf("Shadow: Now, witness my true power! \n");
+    printf("------\n");
+    printf("Shadow has turned into Super Shadow!\n");
+    printf("\n");
+    printf("            Good Luck!              \n");
+    w = 0;
+    p += 1;
+    input(&gameplay);  
 }
