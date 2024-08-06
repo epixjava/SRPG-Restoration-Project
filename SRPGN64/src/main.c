@@ -381,7 +381,7 @@ void main_screen() {
         printf("                         |\n");
         printf("| R | - Heal +30 HP -20MP|\n");
         printf("-------------------------\n");
-        printf("   Press A to proceed    \n");
+        printf("Select a move to proceed \n");
         } else {
         printf("\n");
         printf("\n");
@@ -410,7 +410,7 @@ void main_screen() {
         printf("                         |\n");
         printf("| R | - Heal +30 HP -20MP|\n");
         printf("-------------------------\n");
-        printf("   Press A to proceed    \n");
+        printf("Select a move to proceed \n");
         }
 }
 
@@ -454,7 +454,7 @@ void postgame() {
         printf(" -  MP :   %d                *\n", m);
         printf("\n");
         printf(" -----------           ---------\n");
-        printf(" - SUPER Shadow:          *\n");
+        printf(" - SUPER Shadow!:          *\n");
         printf(" -  HP :   %d                  *\n", a);
         printf(" -  MP :   %d                *\n", y);
         printf(" -----------            ------\n");
@@ -476,5 +476,4 @@ void postgame() {
     printf("            Good Luck!              \n");
     w = 0;
     p += 1;
-    //input(&gameplay);  
-}
+    }
