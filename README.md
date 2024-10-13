@@ -86,7 +86,7 @@ pretty water tight but has some bugs. Will be trying to make a software renderer
 
 ## Gamecube Version
 
-Research has begun, as well as prepping the dev enviorment. 
+Done! Just need to clean up, write documentation and upload. 
 
 
 
