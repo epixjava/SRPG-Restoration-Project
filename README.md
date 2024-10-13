@@ -54,7 +54,7 @@ Go to <https://gchomebrew.com/> Under the ultimate guide there is a list of indi
 - [ ] Finish in progress work decompiling SRPG
    - [ ] 90% Complete, need to figure out vertical scrolling of text
 - [ ] English patch and bug fix
-- [ ] Gamecube version Recreation
+- [*] Gamecube version Recreation
 - [ ] SRPG+ ??>
 - [ ] Update Main Page 
    - [x] Add Changelog 
