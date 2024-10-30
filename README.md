@@ -32,7 +32,13 @@
 * [Special Thanks](#Special-Thanks)
   * Thank Yous
 
-## Introduction (UPDATED 7/14/2024!!)
+## Introduction (UPDATED 8/30/2024) 
+
+## SRPG GC added to repo! 
+
+Finally uploading the completed SRPG GC revival project! Made with devkitpro and works on actual hardware. Check it out! 
+
+## (UPDATE 7/14/2024!!)
 
 ## SRPGN64 added to repo! 
 
@@ -40,7 +46,7 @@ Hello! The SRPG decomp Project is a an effort to restore\recreate the Gamecube V
 
 * Why? 
 
-Idk... I just really like anything related to Sonic The Hedgehog. The unobtainable nature of the game irked me. I just had to have it. The idea of revserve engineering a game I had no source code to sounded like a fun excerise.  
+Idk... I just really like anything related to Sonic The Hedgehog. The unobtainable nature of the game irked me. I just had to have it. The idea of recreating  a game I had no source code to sounded like a fun excerise.  
 
 * Okay but like why? 
 
