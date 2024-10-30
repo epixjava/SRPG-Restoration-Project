@@ -32,15 +32,22 @@
 * [Special Thanks](#Special-Thanks)
   * Thank Yous
 
-## Introduction (UPDATED 8/30/2024) 
+
+## (UPDATE 8/30/2024!!!) 
 
 ## SRPG GC added to repo! 
 
-Finally uploading the completed SRPG GC revival project! Made with devkitpro and works on actual hardware. Check it out! 
+The lost homebrew revived!
+
 
 ## (UPDATE 7/14/2024!!)
 
 ## SRPGN64 added to repo! 
+
+An all new SRPG inspired experince! 
+
+
+## Introduction 
 
 Hello! The SRPG decomp Project is a an effort to restore\recreate the Gamecube Version of Sonic RPG Console. This allows the Homebrew list on <https://gchomebrew.com/> to be comeplete and one more game to run on our beloved Gamecubes. The game was orgionally developed by gameblala.
 
@@ -81,7 +88,6 @@ Go to <https://gchomebrew.com/> Under the ultimate guide there is a list of indi
 
 
 
-
 ## SRPGN64
 
 Oh where did this come from? Did this in a weekend while shacked up after surgery.  SRPGN64 is an all new SRPG experince! 
@@ -90,11 +96,9 @@ pretty water tight but has some bugs. Will be trying to make a software renderer
 
 
 
-
 ## Gamecube Version
 
-Done! Just need to clean up, write documentation and upload. 
-
+Done! The lost classic restored! A simple text based rpg. Recreated using old screenshots, old source code and a hunch. Runs on actual hardware and dolphin. Developed using devkitpro. Project is forever WIP until the orginal is found but this is a close as we are gonna get. Check it out and try it for yourself! 
 
 
 ## SRPG+ 
@@ -111,6 +115,8 @@ Currently day dreaming.
 
 * [DragonMinded/libdragon](https://github.com/DragonMinded/libdragon)
 
+* [devkitpro](https://github.com/devkitpro)
+
 
 
 ## Contact 
@@ -122,7 +128,6 @@ epixjava
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[grrlibimg]: resources/grrlib_logo.png
 [srpgimg]: resources/SRPGLogo.png
 
 
